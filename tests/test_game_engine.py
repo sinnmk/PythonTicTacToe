@@ -14,6 +14,12 @@ class TestGameEngine(unittest.TestCase):
         moves = self.game_engine.store_player_two_moves()
         self.assertEqual(len(moves), 1)
 
+    def test_that_play_game_can_do_multiple_turns(self): 
+        multiple_turns = self.game_engine.play_game()
+        self.assertEqual(multiple_turns, 9)
+
+
+
 
     
 

@@ -22,4 +22,6 @@ class TestUserInterface(unittest.TestCase):
         user_move = self.user_interface.get_game_move()
         self.assertEqual(user_move, 2)
 
+    
+
 

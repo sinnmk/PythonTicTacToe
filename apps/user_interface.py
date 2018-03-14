@@ -11,7 +11,8 @@ class UserInterface(object):
         self.choice_one = ("1. Play Game")
         self.choice_two = ("2. Display Rules")
         self.choice_three = ("3. Quit")
-        self.decoration = ("-------------------")
+        self.lines = ("-------------------")
+        self.user_name_input_msg = ("Please enter your name: ")
 
     def display_rules(self):
         return self.game_rules
@@ -22,6 +23,7 @@ class UserInterface(object):
 
     def get_player_turn_choice(self): 
         player_turn_choice = input(self.player_choice_msg)
+        return player_turn_choice
 
     def display_user_prompt(self): 
         return self.user_prompt
@@ -33,7 +35,7 @@ class UserInterface(object):
         print(self.choice_one)
         print(self.choice_two)
         print(self.choice_three)
-        print(self.decoration)
+        print(self.lines)
     
     def get_menu_choice(self): 
         while True: 
