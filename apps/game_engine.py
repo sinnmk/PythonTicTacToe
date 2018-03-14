@@ -38,8 +38,11 @@ class GameEngine(object):
         self.game_board.create_new_board()
         while self.there_are_turns_left(): 
              self.move_translator.interpret_user_move()
+             self.turns += 1
+             self.check_if_win()
              self.move_translator.interpret_comp_move()
              self.turns += 1
+             self.check_if_win()
                 
     def choose_menu_choice(self): 
         self.user_interface.display_menu()
