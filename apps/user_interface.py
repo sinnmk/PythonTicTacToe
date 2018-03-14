@@ -8,6 +8,7 @@ class UserInterface(object):
         self.menu_prompt = ("Welcome to Tic Tac Toe's MENU")
         self.game_move_choice_msg = ("Please enter your move. You can pick from numbers 1-9: ")
         self.player_choice_msg = ("Please enter which player you would like to be. Player 1 or Player 2. Choose 1 or 2: ")
+        self.game_title = ("TIC TAC TOE")
         self.choice_one = ("1. Play Game")
         self.choice_two = ("2. Display Rules")
         self.choice_three = ("3. Quit")
@@ -32,6 +33,8 @@ class UserInterface(object):
         return self.menu_prompt
 
     def display_menu(self): 
+        print(self.lines)
+        print(self.game_title)
         print(self.choice_one)
         print(self.choice_two)
         print(self.choice_three)
