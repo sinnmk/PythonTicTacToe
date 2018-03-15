@@ -13,7 +13,6 @@ class UserInterface(object):
         self.choice_two = ("2. Display Rules")
         self.choice_three = ("3. Quit")
         self.lines = ("-------------------")
-        self.user_name_input_msg = ("Please enter your name: ")
 
     def display_rules(self):
         return self.game_rules
@@ -25,6 +24,10 @@ class UserInterface(object):
     def get_player_turn_choice(self): 
         player_turn_choice = input(self.player_choice_msg)
         return player_turn_choice
+
+    def get_players_name(self): 
+        player_name = str(input("Input your name: "))
+        return player_name
 
     def display_user_prompt(self): 
         return self.user_prompt
