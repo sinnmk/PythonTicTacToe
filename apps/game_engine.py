@@ -22,13 +22,27 @@ class GameEngine(object):
     def turn_prompt(self): 
         print("It is " + self.name + " turn.")
 
+    def turn_choice(self): 
+        turn_choice = int(self.user_interface.get_player_turn_choice())
+        print(turn_choice)
+        return turn_choice
+
     def play_game(self): 
         game_running = True
-        while game_running == True: 
-            self.game_board.place_x()
-            self.game_board.check_for_win()
-            self.game_board.place_o()
-            self.game_board.check_for_win()
+        turn_choice = self.turn_choice()
+        if turn_choice == 1: 
+            while game_running == True: 
+                self.game_board.place_o()
+                self.game_board.check_for_win()
+                self.game_board.place_x()
+                self.game_board.check_for_win()
+        elif turn_choice == 2: 
+            while game_running == True: 
+                self.game_board.place_x()
+                self.game_board.check_for_win()
+                self.game_board.place_o()
+                self.game_board.check_for_win()
+            
 
     def choose_menu_choice(self): 
         self.user_interface.display_menu()
