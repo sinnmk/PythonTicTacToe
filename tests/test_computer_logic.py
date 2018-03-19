@@ -1,23 +1,12 @@
 import unittest
-from apps.computer_logic import ComputerLogic
+from apps.computer_logic import ComputerLogic 
 
-class TestComputerLogic(unittest.TestCase): 
-
-    def setUp(self): 
-        self.game_logic = GameLogic()
-
-    def test_computer_can_make_first_move(self): 
-        first_move = self.game_logic.make_comp_move()
-        assert self.game_logic.make_computer_move is not None
-
-
-
+class ComputerLogic(unittest.TestCast):
     
+    def setUp(self): 
+        self.computer_logic = ComputerLogic()
 
+    def test_can_make_random_move(self): 
+        move = self.computer_logic.make_comp_move()
+        assert self.computer_logic.make_comp_move() is not None
 
-
-        
-
-
-
-        

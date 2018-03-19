@@ -1,22 +1,20 @@
 import unittest
 from apps.game_engine import GameEngine
+from apps.game_board import GameBoard
 
 class TestGameEngine(unittest.TestCase): 
 
     def setUp(self): 
         self.game_engine = GameEngine()
+        self.game_board = GameBoard()
 
-    def test_can_store_moves_after_human_turn(self): 
-        moves = self.game_engine.store_player_one_moves()
-        self.assertEqual(len(moves), 1)
-
-    def test_can_store_moves_after_comp_turn(self): 
-        moves = self.game_engine.store_player_two_moves()
-        self.assertEqual(len(moves), 1)
-
-    def test_that_play_game_can_do_multiple_turns(self): 
-        multiple_turns = self.game_engine.play_game()
-        self.assertEqual(multiple_turns, 9)
+    def test_for_win_index_0_1_2_position(self): 
+        win = self.game_engine.check_for_win()
+        board = self.game_board.display_board()
+        board[0] == 1
+        board[1] == 1
+        board[3] == 1
+        self.assertEqual(win, True)
 
 
 
