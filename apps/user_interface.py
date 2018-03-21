@@ -23,7 +23,7 @@ class UserInterface(object):
     def get_game_move(self): 
         while True: 
             try: 
-                user_move = int(raw_input(self.game_move_choice_msg))
+                user_move = int(input(self.game_move_choice_msg))
                 return user_move
             except ValueError: 
                 print(self.invalid_input_msg)
@@ -31,13 +31,13 @@ class UserInterface(object):
     def get_player_turn_choice(self): 
         while True: 
             try: 
-                player_turn_choice = int(raw_input(self.player_choice_msg))
+                player_turn_choice = int(input(self.player_choice_msg))
                 return player_turn_choice
             except ValueError: 
                 print(self.invalid_input_msg)
 
     def get_players_name(self): 
-        player_name = raw_input(self.input_name_msg)
+        player_name = input(self.input_name_msg)
         return player_name
 
     def display_user_prompt(self): 
@@ -55,7 +55,7 @@ class UserInterface(object):
     def get_menu_choice(self): 
         while True: 
             try: 
-                choice = int(raw_input(self.user_choice_msg))
+                choice = int(input(self.user_choice_msg))
                 return choice
             except ValueError: 
                 print(self.invalid_input_msg)

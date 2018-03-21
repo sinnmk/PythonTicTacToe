@@ -1,22 +1,25 @@
-from computer_logic import ComputerLogic
-from user_interface import UserInterface
-from game_board import GameBoard
-from game_play_options import GamePlayOptions
+from user_interface import UserInterface 
+from game_board import GameBoard 
+from game_play_options import GamePlayOptions 
 import numpy as np
 
 class GameEngine(object): 
 
     def __init__(self): 
         self.user_interface = UserInterface()
-        self.computer_logic = ComputerLogic()
         self.game_play_options = GamePlayOptions()
         self.game_board = GameBoard()
-        self.turns = 0
+        #move msgs all in one place
         self.invalid_input_msg = ("You have given an invalid choice, please try again: ")
+
+    def return_choice(self): 
+        choice = getattr(self, self.user_interface)
+        return choice
 
     def choose_menu_choice(self): 
         self.user_interface.display_menu()
         user_choice = self.user_interface.get_menu_choice()
+
         if (user_choice == 1): 
             self.game_play_options.player_vs_computer()
         elif (user_choice == 2): 

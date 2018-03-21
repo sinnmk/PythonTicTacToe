@@ -22,10 +22,10 @@ class GameBoard(object):
 
     def empty_slots(self): 
         open_slots = []
-        bool_arr = (self.board == 0)
-        flat_bool_arr = bool_arr.flatten()
-        for i in range(0, len(flat_bool_arr)): 
-            if flat_bool_arr[i] == True: 
+        empty_slots = (self.board == 0)
+        flat_empty_slots = empty_slots.flatten()
+        for i in range(0, len(flat_empty_slots)): 
+            if flat_empty_slots[i] == True: 
                 open_slots.append(i + 1)
         return open_slots
 
@@ -39,6 +39,14 @@ class GameBoard(object):
 
     def place_x(self): 
         index = self.find_index_of_comp_move()
+        self.board[index] = 2
+
+    def player_place_o(self): 
+        index = self.find_index_of_user_move()
+        self.board[index] = 1
+
+    def player_place_x(self): 
+        index = self.find_index_of_user_move()
         self.board[index] = 2
 
     def display_board(self): 
@@ -102,53 +110,54 @@ class GameBoard(object):
 
     def check_for_win(self): 
         board = self.display_board()
+                
         if board[0] == board[1] == board[2] == 1: 
-            print("P1 wins!")
-            quit()
+            print("Player one wins!")
+            exit()
         elif board[0] == board[1] == board[2] == 2: 
-            print("P2 wins!")
-            quit()
+            print("Player two wins!")
+            exit()
 
         if board[3] == board[4] == board[5] == 1: 
-            print("P1 wins!")
-            quit()
+            print("Player one wins")
+            exit()
         elif board[3] == board[4] == board[5] == 2: 
-            print("P2 wins!")
+            print("Player two wins!")
             quit()
 
         if board[6] == board[7] == board[8] == 1: 
-            print("P1 wins!")
+            print("Player one wins!")
             quit()
         elif board[6] == board[7] == board[8] == 2: 
-            print("P2 wins!")
+            print("Player two wins!")
             quit()
                     
         if board[0] == board[3] == board[6] == 1: 
-            print("P1 wins!")
+            print("Player one wins!")
             quit()
         elif board[0] == board[3] == board[6] == 2: 
-            print("P2 wins!")
+            print("Player two wins!")
             quit()
             
         if board[1] == board[4] == board[7] == 1: 
-            print("P1 wins!")
+            print("Player one wins!")
             quit()
         elif board[1] == board[4] == board[7] == 2: 
-            print("P2 wins!")
+            print("Player two wins!")
             quit()
 
         if board[2] == board[5] == board[8] == 1: 
-            print("P1 wins!")
+            print("Player one wins!")
             quit()
         elif board[2] == board[5] == board[8] == 2: 
-            print("P2 wins!")
+            print("Player two wins")
             quit()
 
         if board[2] == board[4] == board[6] == 1: 
-            print("P1 wins!")
+            print("Player one wins!")
             quit()
         elif board[2] == board[4] == board[6] == 2: 
-            print("P2 wins!")
+            print("Player two wins!")
             quit()
 
         if board[0] == board[4] == board[8] == 1: 
