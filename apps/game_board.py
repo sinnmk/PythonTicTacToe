@@ -31,7 +31,7 @@ class GameBoard(object):
 
     def place_o(self): 
         index = self.find_index_of_user_move()
-        self.board[index] = 1 
+        self.board[index] = 1
 
     def comp_place_o(self): 
         index = self.find_index_of_comp_move()
@@ -73,7 +73,7 @@ class GameBoard(object):
 
     def user_move(self):
         empty_slots = self.empty_slots()
-        user_move = self.user_interface.get_game_move()
+        user_move = self.user_interface.input_move()
         user_move = int(user_move)
         if len(empty_slots) > 0: 
             if user_move in empty_slots: 
@@ -110,7 +110,6 @@ class GameBoard(object):
 
     def check_for_win(self): 
         board = self.display_board()
-                
         if board[0] == board[1] == board[2] == 1: 
             print("Player one wins!")
             exit()

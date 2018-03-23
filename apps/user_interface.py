@@ -20,25 +20,29 @@ class UserInterface(object):
     def display_rules(self):
         return self.game_rules
 
-    def get_game_move(self): 
+    def input_move(self): 
         while True: 
             try: 
-                user_move = int(input(self.game_move_choice_msg))
-                return user_move
+                move = int(input(self.game_move_choice_msg))
+                return move
             except ValueError: 
                 print(self.invalid_input_msg)
 
-    def get_player_turn_choice(self): 
+    def input_turn_choice(self): 
         while True: 
             try: 
-                player_turn_choice = int(input(self.player_choice_msg))
-                return player_turn_choice
+                turn_choice = int(input(self.player_choice_msg))
+                return turn_choice
             except ValueError: 
                 print(self.invalid_input_msg)
 
-    def get_players_name(self): 
-        player_name = input(self.input_name_msg)
-        return player_name
+    def input_name(self): 
+        while True: 
+            try: 
+                name = input(self.input_name_msg)
+                return name
+            except ValueError: 
+                print(self.invalid_input_msg)
 
     def display_user_prompt(self): 
         return self.user_prompt
@@ -46,19 +50,19 @@ class UserInterface(object):
     def display_menu_prompt(self): 
         return self.menu_prompt
 
-    def display_menu(self): 
-        print(self.line_divide)
-        print(self.top_menu_title)
-        print(self.top_menu_choices)
-        print(self.line_divide)
-
-    def get_menu_choice(self): 
+    def input_menu_choice(self): 
         while True: 
             try: 
                 choice = int(input(self.user_choice_msg))
                 return choice
             except ValueError: 
                 print(self.invalid_input_msg)
+
+    def display_menu(self): 
+        print(self.line_divide)
+        print(self.top_menu_title)
+        print(self.top_menu_choices)
+        print(self.line_divide)
 
         
 
