@@ -17,8 +17,19 @@ class UserInterface(object):
         self.top_menu_choices = ("1. Play Person vs Computer \n2. Play Person vs Person \n3. Play Computer vs Computer \n4. Display Rules\n5. Quit")
         self.line_divide = ("------------")
 
+    def print_example_board(self): 
+        example_board = ("""
+                        1 | 2 | 3 
+                        --+---+--
+                        4 | 5 | 6
+                        --+---+--
+                        7 | 8 | 9
+
+                        """)
+        print(example_board)
+
     def display_rules(self):
-        return self.game_rules
+        print(self.game_rules)
 
     def input_move(self): 
         while True: 
@@ -63,6 +74,9 @@ class UserInterface(object):
         print(self.top_menu_title)
         print(self.top_menu_choices)
         print(self.line_divide)
+
+UserInterface()
+
 
         
 
