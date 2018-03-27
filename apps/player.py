@@ -49,13 +49,10 @@ class Human(Player):
 class Computer(Player): 
 
     def __init__(self): 
-        self.stored_moves = []
         self.open_positions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     def make_move(self): 
-        #FIGURE OUT HOW TO ONLY ACCEPT OPEN POSITIONS
         move = random.choice(self.open_positions)
-        self.stored_moves.append(move)
         return move 
 
     def display_players_name(self): 

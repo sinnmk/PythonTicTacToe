@@ -19,6 +19,7 @@ class GameEngine(object):
         self.new_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.place_board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.turns = 0
+        self.game_running = True
 
     def display_players_name(self): 
         print("It is " + self.human_player.set_name() + " turn")
@@ -53,14 +54,17 @@ class GameEngine(object):
 
     #EVALUATE WIN
     def check_for_win(self): 
-        win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
+        win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
         board = self.place_board
 
         for i in win_combos:
-            if board[i[0]] == 1 and board[i[1]] == 1 and  board[i[2]] == 1: 
+            if board[i[0]] == 1 and board[i[1]] == 1 and board[i[2]] == 1: 
                 print("X WINS")
-            if board[i[0]] == 2 and  board[i[1]] == 2 and  board[i[2]] == 2: 
+                self.game_running = False
+
+            elif board[i[0]] == 2 and board[i[1]] == 2 and board[i[2]] == 2: 
                 print("O WINS")
+                self.game_running = False
 
     #CHECK OPEN POSITIONS 
     def is_position_open(self, index): 
@@ -74,6 +78,7 @@ class GameEngine(object):
     def place_x(self, index): 
         if self.is_position_open(index) == True: 
             self.place_board[index] = 1
+            print(self.place_board)
             self.turns += 1
         else: 
             print(self.not_open_msg)
@@ -87,18 +92,47 @@ class GameEngine(object):
 
     #GAME CHOICES
     def player_vs_computer(self): 
-            pass
+        while self.game_running: 
+            move = self.human_player.make_move()
+            index = self.find_index_of_move(move)
+            self.place_x(index) 
+            self.display_board()
+            self.check_for_win()
+
+            move = self.computer_player.make_move()
+            index = self.find_index_of_move(move)
+            self.place_o(index)
+            self.display_board()
+            self.check_for_win()
 
     def player_vs_player(self): 
-        while self.turns < 9:  
+        while self.game_running:   
             move = self.human_player.make_move()
             index = self.find_index_of_move(move)
             self.place_x(index)
-            self.check_for_win()
             self.display_board()
+            self.check_for_win()
+            move = self.human_player.make_move()
+            index = self.find_index_of_move(move)
+            self.place_o(index)
+            self.display_board()
+            self.check_for_win()
 
     def computer_vs_computer(self): 
-        pass
+        while self.game_running: 
+            move = self.computer_player.make_move()
+            index = self.find_index_of_move(move)
+            self.place_x(index)
+            time.sleep(1)
+            self.display_board()
+            self.check_for_win()
+            move = self.computer_player.make_move()
+            index = self.find_index_of_move(move)
+            self.place_o(index)
+            time.sleep(1)
+            self.display_board()
+            self.check_for_win()
+
 
     def display_rules(self): 
         self.user_interface.display_rules()
