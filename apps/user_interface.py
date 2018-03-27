@@ -75,7 +75,6 @@ class UserInterface(object):
         print(self.top_menu_choices)
         print(self.line_divide)
 
-UserInterface()
 
 
         

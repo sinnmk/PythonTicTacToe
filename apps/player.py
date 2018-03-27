@@ -3,14 +3,16 @@ import functools
 from functools import reduce
 import random
 
-#Parent class
+#BASE CLASS: PLAYER
 class Player(object): 
     move = 0
     name = ''
+    turn = 0
     
-    def __init__(self, move, name): 
+    def __init__(self, move, name, turn): 
         self.move = move 
         self.name = name 
+        self.turn = turn
 
     def get_name(self): 
         return self.name
@@ -18,9 +20,12 @@ class Player(object):
     def make_move(self):
         return self.move
 
-#Child class
+    def set_turn(self): 
+        return self.turn
+
+#DERIVED CLASS: HUMAN
 class Human(Player): 
-    
+
     def __init__(self): 
         self.user_interface = UserInterface()
         self.stored_moves = [] 
@@ -40,15 +45,17 @@ class Human(Player):
     def display_players_name(self): 
         print("It is " + self.set_name() + "'s" + " turn.")
 
-#Child class
+#DERIVED CLASS: COMPUTER
 class Computer(Player): 
 
     def __init__(self): 
         self.stored_moves = []
+        self.open_positions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     def make_move(self): 
-        open_positions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        move = random.choice(open_positions)
+        #FIGURE OUT HOW TO ONLY ACCEPT OPEN POSITIONS
+        move = random.choice(self.open_positions)
+        self.stored_moves.append(move)
         return move 
 
     def display_players_name(self): 
@@ -62,6 +69,10 @@ def name(Player):
 
 def display_name(Player): 
     Player.display_players_name()
+
+def set_turn(Player): 
+    Player.set_turn()
+
 
 
 
