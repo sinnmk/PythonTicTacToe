@@ -1,18 +1,19 @@
 from user_interface import UserInterface
-import functools 
-from functools import reduce
 import random
 
-#BASE CLASS: PLAYER
+#_____BASE CLASS: PLAYER_____
+
 class Player(object): 
     move = 0
     name = ''
     turn = 0
-    
-    def __init__(self, move, name, turn): 
+    index = 0
+
+    def __init__(self, move, name, turn, index): 
         self.move = move 
         self.name = name 
         self.turn = turn
+        self.index = index
 
     def get_name(self): 
         return self.name
@@ -23,12 +24,22 @@ class Player(object):
     def set_turn(self): 
         return self.turn
 
-#DERIVED CLASS: HUMAN
+    def find_index_of_move(self):
+        move = self.make_move()
+        move_index = 0
+        for num in self.num_board: 
+            if num == move:
+                move_index = move - 1
+        return move_index
+
+#_____DERIVED CLASS: HUMAN_____
+
 class Human(Player): 
 
     def __init__(self): 
         self.user_interface = UserInterface()
         self.stored_moves = [] 
+        self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     def make_move(self): 
         move = self.user_interface.input_move()
@@ -45,11 +56,13 @@ class Human(Player):
     def display_players_name(self): 
         print("It is " + self.set_name() + "'s" + " turn.")
 
-#DERIVED CLASS: COMPUTER
+#_____DERIVED CLASS: COMPUTER_____
+
 class Computer(Player): 
 
     def __init__(self): 
         self.open_positions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     def make_move(self): 
         move = random.choice(self.open_positions)
@@ -70,7 +83,8 @@ def display_name(Player):
 def set_turn(Player): 
     Player.set_turn()
 
-
+def find_move_index(Player):
+    Player.find_move_index()
 
 
 
