@@ -2,7 +2,6 @@ from user_interface import UserInterface
 import random
 
 #_____BASE CLASS: PLAYER_____
-
 class Player(object): 
     move = 0
     name = ''
@@ -33,7 +32,6 @@ class Player(object):
         return move_index
 
 #_____DERIVED CLASS: HUMAN_____
-
 class Human(Player): 
 
     def __init__(self): 
@@ -57,15 +55,14 @@ class Human(Player):
         print("It is " + self.set_name() + "'s" + " turn.")
 
 #_____DERIVED CLASS: COMPUTER_____
-
 class Computer(Player): 
 
     def __init__(self): 
-        self.open_positions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        self.choices = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     def make_move(self): 
-        move = random.choice(self.open_positions)
+        move = random.choice(self.choices)
         return move 
 
     def display_players_name(self): 
@@ -85,6 +82,9 @@ def set_turn(Player):
 
 def find_move_index(Player):
     Player.find_move_index()
+
+def get_place_board(Player): 
+    Player.get_place_board()
 
 
 
