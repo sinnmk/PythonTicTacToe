@@ -4,15 +4,16 @@ import random
 #_____BASE CLASS: PLAYER_____
 class Player(object): 
     move = 0
+    index = 0
     name = ''
     turn = 0
-    index = 0
 
-    def __init__(self, move, name, turn, index): 
+    def __init__(self, move, index, name, turn): 
         self.move = move 
+        self.index = index
         self.name = name 
         self.turn = turn
-        self.index = index
+        self.place_board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     def get_name(self): 
         return self.name
@@ -38,6 +39,7 @@ class Human(Player):
         self.user_interface = UserInterface()
         self.stored_moves = [] 
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        self.place_board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     def make_move(self): 
         move = self.user_interface.input_move()
@@ -52,21 +54,23 @@ class Human(Player):
         return turn 
 
     def display_players_name(self): 
-        print("It is " + self.set_name() + "'s" + " turn.")
+        name = self.set_name()
+        return("It is " + name + "'s" + " turn.")
 
 #_____DERIVED CLASS: COMPUTER_____
 class Computer(Player): 
 
     def __init__(self): 
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        self.choices = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        self.place_board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-    def make_move(self): 
-        move = random.choice(self.choices)
-        return move 
+    def make_move(self):
+        move = random.choice(self.num_board)
+        return move
 
     def display_players_name(self): 
-        print("It is the computer's turn.")
+        name = "Computer"
+        return("It is " + name + "'s" + " turn.")
 
 def move(Player): 
     Player.make_move()
@@ -82,20 +86,4 @@ def set_turn(Player):
 
 def find_move_index(Player):
     Player.find_move_index()
-
-def get_place_board(Player): 
-    Player.get_place_board()
-
-
-
-
-
-
-
-
-
-
-
-
-
 
