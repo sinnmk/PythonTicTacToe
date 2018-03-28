@@ -78,14 +78,29 @@ class GameEngine(object):
         else: 
             print(self.not_open_msg)
 
+    #_____________TURN CHOICE___________
+    def turn_choice(self): 
+        choice = self.human_player.set_turn()
+        player_num = 0 
+        if choice == 1: 
+            player_num = 1
+        elif choice == 2: 
+            player_num = 2
+        return player_num
+
     #____________GAME CHOICES____________
     def player_vs_computer(self): 
+        self.turn_choice()
+        human_turn_prompt = self.human_player.display_players_name()
         while self.game_running:
             self.user_interface.print_example_board()
             index = self.human_player.find_index_of_move()
+            human_turn_prompt
             self.place_x(index) 
             index = self.computer_player.find_index_of_move()
             self.place_o(index)
+            computer_turn_prompt = self.computer_player.display_players_name()
+            time.sleep(1)
             self.display_board()
             self.check_for_win()
 
