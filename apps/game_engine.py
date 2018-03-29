@@ -19,11 +19,6 @@ class GameEngine(object):
         #_______VARIABLES________
         self.place_board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.game_running = True
-        self.turns = 0
-
-    def show_place_board(self): 
-        board = self.place_board
-        return board 
 
     def display_players_name(self): 
         print("It is " + self.human_player.set_name() + " turn")
@@ -62,7 +57,6 @@ class GameEngine(object):
                 print("Player O WINS")
                 self.game_running = False
 
-
    #_____________PLACE MOVE____________
     def place_x(self, index, board): 
         board[index] = 1
@@ -83,12 +77,16 @@ class GameEngine(object):
     #____________GAME CHOICES____________
     def player_vs_computer(self): 
         board = self.place_board
+        human_turn_prompt = self.human_player.display_players_name()
         while self.game_running:
            self.user_interface.print_example_board()
+           self.computer_player.display_players_name()
+           time.sleep(1)
            index = self.computer_player.find_index_of_move(board)
            self.place_x(index, board)
            self.display_board()
            self.check_for_win()
+           human_turn_prompt
            index = self.human_player.find_index_of_move(board)
            self.place_o(index, board)
            self.display_board()
@@ -96,10 +94,16 @@ class GameEngine(object):
 
     def player_vs_player(self): 
         board = self.place_board
+        player_one = self.human_player.display_players_name()
+        player_two = self.human_player.display_players_name()
+
         while self.game_running: 
+            player_one
             index = self.human_player.find_index_of_move(board)
             self.place_x(index, board)
             self.display_board()
+            self.check_for_win()
+            player_two
             index = self.human_player.find_index_of_move(board)
             self.place_o(index, board)
             self.display_board()
@@ -111,6 +115,7 @@ class GameEngine(object):
             index = self.computer_player.find_index_of_move(board)
             self.place_x(index, board)
             self.display_board()
+            self.check_for_win()
             time.sleep(1)
             index = self.computer_player.find_index_of_move(board)
             self.place_o(index, board)
