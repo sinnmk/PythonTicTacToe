@@ -39,13 +39,22 @@ class UserInterface(object):
         print(menu)
 
     #______________INPUTS_____________
-    def input_move(self): 
-        while True: 
-            try: 
-                move = int(input(self.game_move_choice_msg))
-                return move
-            except ValueError: 
-                print(self.invalid_input_msg)
+    def input_move(self, board): 
+        open_positions = []
+        i = 0
+        while i < len(board): 
+            for digit in board: 
+                if board[i] == 0: 
+                    open_positions.append(i + 1)
+                if board[i] != 0: 
+                    open_positions.append("")
+                i += 1
+        move = int(input(self.game_move_choice_msg))
+        if move in open_positions: 
+            return move
+        else: 
+            print("move not open")
+            return self.input_move(board)
 
     def input_turn_choice(self): 
         while True: 

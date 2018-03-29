@@ -1,4 +1,4 @@
-from user_interface import UserInterface
+from user_interface import UserInterface 
 import random
 
 #_____BASE CLASS: PLAYER_____
@@ -9,26 +9,24 @@ class Player(object):
     turn = '' 
 
     def __init__(self, move, index, name, turn): 
-        self.PLAYER_X = PLAYER_X
-        self.PLAYER_O = PLAYER_O
         self.move = move 
         self.index = index
         self.name = name 
         self.turn = turn
-        self.place_board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        self.game_engine = GameEngine()
 
     def get_name(self): 
         return self.name
 
-    def make_move(self):
+    def make_move(self, board):
         return self.move
 
     def set_turn(self): 
         return self.turn
 
-    def find_index_of_move(self):
-        move = self.make_move()
+    def find_index_of_move(self, board):
+        move = self.make_move(board)
         move_index = 0
         for num in self.num_board: 
             if num == move:
@@ -46,8 +44,8 @@ class Human(Player):
         self.stored_moves = [] 
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    def make_move(self): 
-        move = self.user_interface.input_move()
+    def make_move(self, board): 
+        move = self.user_interface.input_move(board)
         return move
 
     def set_name(self): 
@@ -64,16 +62,28 @@ class Computer(Player):
     def __init__(self): 
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    def make_move(self):
+    def make_move(self, board):
+        i = 0
+        open_positions = [] 
+        while i < len(board): 
+            for digit in board: 
+                if board[i] == 0: 
+                    open_positions.append(i + 1)
+                if board[i] != 0: 
+                    open_positions.append("")
+                i += 1
         move = random.choice(self.num_board)
-        return move
+        if move in open_positions: 
+            return move
+        else: 
+            return self.make_move(board)
 
     def set_name(self): 
         name = "Computer"
         return name
 
 def move(Player): 
-    Player.make_move()
+    Player.make_move(board)
 
 def name(Player): 
     Player.set_name()
@@ -84,6 +94,8 @@ def display_name(Player):
 def set_turn(Player): 
     Player.set_turn()
 
-def find_move_index(Player):
-    Player.find_move_index()
+def find_index_of_move(Player):
+    Player.find_index_of_move(board)
+
+
 
