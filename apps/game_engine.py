@@ -65,14 +65,14 @@ class GameEngine(object):
         board[index] = 2
 
     #_____________TURN CHOICE___________
-    def turn_choice(self): 
-        choice = self.human_player.set_turn()
-        player_num = 0 
-        if choice == 1: 
-           self.place_x(index)
-        elif choice == 2: 
-           self.place_o(index)
-        return player_num
+   # def turn_choice(self): 
+   #     choice = self.human_player.set_turn()
+   #     player_num = 0 
+   #     if choice == 1: 
+   #        self.place_x(index)
+   #     elif choice == 2: 
+   #        self.place_o(index)
+   #     return player_num
 
     #____________GAME CHOICES____________
     def player_vs_computer(self): 
@@ -86,11 +86,14 @@ class GameEngine(object):
            self.place_x(index, board)
            self.display_board()
            self.check_for_win()
-           human_turn_prompt
-           index = self.human_player.find_index_of_move(board)
-           self.place_o(index, board)
-           self.display_board()
-           self.check_for_win()
+           if self.game_running == False: 
+              continue
+           else: 
+              human_turn_prompt
+              index = self.human_player.find_index_of_move(board)
+              self.place_o(index, board)
+              self.display_board()
+              self.check_for_win()
 
     def player_vs_player(self): 
         board = self.place_board
@@ -103,11 +106,14 @@ class GameEngine(object):
             self.place_x(index, board)
             self.display_board()
             self.check_for_win()
-            player_two
-            index = self.human_player.find_index_of_move(board)
-            self.place_o(index, board)
-            self.display_board()
-            self.check_for_win()
+            if self.game_running == False: 
+               continue
+            else: 
+               player_two
+               index = self.human_player.find_index_of_move(board)
+               self.place_o(index, board)
+               self.display_board()
+               self.check_for_win()
 
     def computer_vs_computer(self): 
         board = self.place_board
@@ -117,11 +123,14 @@ class GameEngine(object):
             self.display_board()
             self.check_for_win()
             time.sleep(1)
-            index = self.computer_player.find_index_of_move(board)
-            self.place_o(index, board)
-            self.display_board()
-            self.check_for_win()
-            time.sleep(1)
+            if self.game_running == False: 
+               continue
+            else: 
+               index = self.computer_player.find_index_of_move(board)
+               self.place_o(index, board)
+               self.display_board()
+               self.check_for_win()
+               time.sleep(1)
             
     def display_rules(self): 
         self.user_interface.display_rules()
