@@ -1,6 +1,8 @@
 from user_interface import UserInterface 
+from player import Player
+from human import Human
+from computer import Computer
 import time
-from player import Player, Human, Computer
 
 class GameEngine(object): 
 
@@ -19,43 +21,50 @@ class GameEngine(object):
         #_______VARIABLES________
         self.place_board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.game_running = True
+        self.turns = 0
 
     def display_players_name(self): 
         print("It is " + self.human_player.set_name() + " turn")
 
+    def return_one(self): 
+        self.display_players_name()
+        return 1
+
     #_____DISPLAY AND MODIFY BOARD_____
-    def display_board(self): 
-        self.game_board_list = []
+    def display_board(self, board): 
+        game_board_list = []
 
         for i in range(0, 9): 
-            if self.place_board[i] == 1: 
-                self.game_board_list.append('X')
-            elif self.place_board[i] == 2: 
-                self.game_board_list.append('O')
-            elif self.place_board[i] == 0: 
-                self.game_board_list.append(' ')
-
+            if board[i] == 1: 
+                game_board_list.append('X')
+            elif board[i] == 2: 
+                game_board_list.append('O')
+            elif board[i] == 0: 
+                game_board_list.append(' ')
         print("""
          {} | {} | {}
         ---+---+---
          {} | {} | {}
         ---+---+---
          {} | {} | {}
-        """.format(*self.game_board_list))
-        return self.place_board
+        """.format(*game_board_list))
+        return game_board_list
 
     #__________EVALUATE WIN___________
-    def check_for_win(self): 
+    def check_for_win(self, board): 
         win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
 
         for i in win_combos:
-            if self.place_board[i[0]] == 1 and self.place_board[i[1]] == 1 and self.place_board[i[2]] == 1: 
+            if board[i[0]] == 1 and board[i[1]] == 1 and board[i[2]] == 1: 
                 print("Player X WINS")
                 self.game_running = False
-
-            elif self.place_board[i[0]] == 2 and self.place_board[i[1]] == 2 and self.place_board[i[2]] == 2: 
-                print("Player O WINS")
+                exit()
+            if board[i[0]] == 2 and board[i[1]] == 2 and board[i[2]] == 2: 
                 self.game_running = False
+                print("Player O WINS")
+                exit()
+            else: 
+                self.game_running = True
 
    #_____________PLACE MOVE____________
     def place_x(self, index, board): 
@@ -64,73 +73,59 @@ class GameEngine(object):
     def place_o(self, index, board): 
         board[index] = 2
 
-    #_____________TURN CHOICE___________
-   # def turn_choice(self): 
-   #     choice = self.human_player.set_turn()
-   #     player_num = 0 
-   #     if choice == 1: 
-   #        self.place_x(index)
-   #     elif choice == 2: 
-   #        self.place_o(index)
-   #     return player_num
-
     #____________GAME CHOICES____________
     def player_vs_computer(self): 
         board = self.place_board
-        human_turn_prompt = self.human_player.display_players_name()
         while self.game_running:
            self.user_interface.print_example_board()
            self.computer_player.display_players_name()
            time.sleep(1)
            index = self.computer_player.find_index_of_move(board)
+           self.turns += 1
+           self.check_for_win(board)
            self.place_x(index, board)
-           self.display_board()
-           self.check_for_win()
-           if self.game_running == False: 
-              continue
+           self.display_board(board)
+           if self.turns == 9: 
+              print("CAT GAME")
+              break 
            else: 
-              human_turn_prompt
               index = self.human_player.find_index_of_move(board)
+              self.turns += 1
               self.place_o(index, board)
-              self.display_board()
-              self.check_for_win()
+              self.display_board(board)
+              self.check_for_win(board)
 
     def player_vs_player(self): 
         board = self.place_board
-        player_one = self.human_player.display_players_name()
-        player_two = self.human_player.display_players_name()
-
         while self.game_running: 
-            player_one
             index = self.human_player.find_index_of_move(board)
             self.place_x(index, board)
-            self.display_board()
-            self.check_for_win()
-            if self.game_running == False: 
-               continue
+            self.display_board(board)
+            self.check_for_win(board)
+            if self.turns == 9: 
+               print("CAT GAME")
+               break 
             else: 
-               player_two
                index = self.human_player.find_index_of_move(board)
                self.place_o(index, board)
-               self.display_board()
-               self.check_for_win()
+               self.display_board(board)
+               self.check_for_win(board)
 
     def computer_vs_computer(self): 
         board = self.place_board
-        while self.game_running: 
+        while self.turns < 9: 
             index = self.computer_player.find_index_of_move(board)
+            self.turns += 1
             self.place_x(index, board)
-            self.display_board()
-            self.check_for_win()
+            self.display_board(board)
+            self.check_for_win(board)
             time.sleep(1)
-            if self.game_running == False: 
-               continue
-            else: 
-               index = self.computer_player.find_index_of_move(board)
-               self.place_o(index, board)
-               self.display_board()
-               self.check_for_win()
-               time.sleep(1)
+            index = self.computer_player.find_index_of_move(board)
+            self.turns += 1
+            self.place_o(index, board)
+            self.display_board(board)
+            self.check_for_win(board)
+            time.sleep(1)
             
     def display_rules(self): 
         self.user_interface.display_rules()
