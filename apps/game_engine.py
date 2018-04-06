@@ -99,6 +99,7 @@ class GameEngine(object):
         board = self.place_board
         while self.game_running: 
             index = self.human_player.find_index_of_move(board)
+            self.turns += 1
             self.place_x(index, board)
             self.display_board(board)
             self.check_for_win(board)
@@ -107,6 +108,7 @@ class GameEngine(object):
                break 
             else: 
                index = self.human_player.find_index_of_move(board)
+               self.turns += 1
                self.place_o(index, board)
                self.display_board(board)
                self.check_for_win(board)
@@ -120,12 +122,16 @@ class GameEngine(object):
             self.display_board(board)
             self.check_for_win(board)
             time.sleep(1)
-            index = self.computer_player.find_index_of_move(board)
-            self.turns += 1
-            self.place_o(index, board)
-            self.display_board(board)
-            self.check_for_win(board)
-            time.sleep(1)
+            if self.turns == 9: 
+               print("CAT GAME")
+               break 
+            else: 
+               index = self.computer_player.find_index_of_move(board)
+               self.turns += 1
+               self.place_o(index, board)
+               self.display_board(board)
+               self.check_for_win(board)
+               time.sleep(1)
             
     def display_rules(self): 
         self.user_interface.display_rules()

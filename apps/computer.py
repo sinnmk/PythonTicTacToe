@@ -9,30 +9,30 @@ class Computer(Player):
 
     def get_possible_win_combos(self, board): 
         winning_moves = []
-        for i in self.win_combos: 
-            if board[i[0]] == 1 and board[i[1]] == 1 and board[i[2]] == 0: 
-                move = self.num_board[i[2]]
-                winning_moves.append(move)
-            if board[i[0]] == 0 and board[i[1]] == 1 and board[i[2]] == 1: 
-                move = self.num_board[i[0]]
-                winning_moves.append(move)
-            if board[i[0]] == 1 and board[i[1]] == 0 and board[i[2]] == 1: 
-                move = self.num_board[i[1]]
-                winning_moves.append(move)
+        for combo in self.win_combos: 
+            if board[combo[0]] == 1 and board[combo[1]] == 1 and board[combo[2]] == 0: 
+                moves = self.num_board[combo[2]]
+                winning_moves.append(moves)
+            if board[combo[0]] == 0 and board[combo[1]] == 1 and board[combo[2]] == 1: 
+                moves = self.num_board[combo[0]]
+                winning_moves.append(moves)
+            if board[combo[0]] == 1 and board[combo[1]] == 0 and board[combo[2]] == 1: 
+                moves = self.num_board[combo[1]]
+                winning_moves.append(moves)
         return winning_moves
 
     def get_possible_lose_combos(self, board):
         blocking_moves = []
-        for i in self.win_combos: 
-            if board[i[0]] == 2 and board[i[1]] == 2 and board[i[2]] == 0: 
-                move = self.num_board[i[2]]
-                blocking_moves.append(move)
-            if board[i[0]] == 0 and board[i[1]] == 2 and board[i[2]] == 2: 
-                move = self.num_board[i[0]]
-                blocking_moves.append(move)
-            if board[i[0]] == 2 and board[i[1]] == 0 and board[i[2]] == 2: 
-                move = self.num_board[i[1]]
-                blocking_moves.append(move)
+        for combo in self.win_combos: 
+            if board[combo[0]] == 2 and board[combo[1]] == 2 and board[combo[2]] == 0: 
+                moves = self.num_board[combo[2]]
+                blocking_moves.append(moves)
+            if board[combo[0]] == 0 and board[combo[1]] == 2 and board[combo[2]] == 2: 
+                moves = self.num_board[combo[0]]
+                blocking_moves.append(moves)
+            if board[combo[0]] == 2 and board[combo[1]] == 0 and board[combo[2]] == 2: 
+                moves = self.num_board[combo[1]]
+                blocking_moves.append(moves)
         return blocking_moves
 
     def make_move(self, board):
