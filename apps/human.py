@@ -19,3 +19,4 @@ class Human(Player):
     def set_turn(self): 
         turn = self.user_interface.input_turn_choice()
         return turn 
+

@@ -35,17 +35,9 @@ class Computer(Player):
                 blocking_moves.append(moves)
         return blocking_moves
 
-    def make_move(self, board):
+    def get_open_positions(self, board): 
+        open_positions = []
         i = 0
-        open_positions = [] 
-        winning_moves = self.get_possible_win_combos(board)
-        blocking_moves = self.get_possible_lose_combos(board)
-        if len(winning_moves) > 0: 
-            move = random.choice(winning_moves)
-            return move
-        if len(blocking_moves) > 0:
-            move = random.choice(blocking_moves)
-            return move
         while i < len(board): 
             for digit in board: 
                 if board[i] == 0: 
@@ -53,6 +45,20 @@ class Computer(Player):
                 if board[i] != 0: 
                     open_positions.append("")
                 i += 1
+        return open_positions
+
+    def make_move(self, board):
+        i = 0
+        open_positions = [] 
+        winning_moves = self.get_possible_win_combos(board)
+        blocking_moves = self.get_possible_lose_combos(board)
+        open_positions = self.get_open_positions(board)
+        if len(winning_moves) > 0: 
+            move = random.choice(winning_moves)
+            return move
+        if len(blocking_moves) > 0:
+            move = random.choice(blocking_moves)
+            return move
         move = random.choice(self.num_board)
         if move in open_positions: 
             return move
@@ -67,4 +73,5 @@ class Computer(Player):
         turn_choices = [1, 2]
         choice = random.choice(turn_choices)
         return choice
+
     
