@@ -62,7 +62,9 @@ class Computer(Player):
     def set_name(self): 
         name = "Computer"
         return name
-    
 
+    def set_turn(self): 
+        turn_choices = [1, 2]
+        choice = random.choice(turn_choices)
+        return choice
     
-

@@ -3,12 +3,14 @@ class Player(object):
     index = '' 
     name = ''
     turn = '' 
+    player_positon = ''
 
-    def __init__(self, move, index, name, turn): 
+    def __init__(self, move, index, name, player_turn_positon): 
         self.move = move 
         self.index = index
         self.name = name 
         self.turn = turn
+        self.player_turn_position = player_turn_position
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.game_engine = GameEngine()
 
@@ -20,6 +22,17 @@ class Player(object):
 
     def set_turn(self): 
         return self.turn
+
+    def set_player_turn_position(self, turn): 
+        while True: 
+            try: 
+                if turn == 1: 
+                    self.player_turn_postion = 1
+                else: 
+                    self.player_turn_position = 2
+                return self.player_turn_position
+            except ValueError: 
+                print("Please try again")
 
     def find_index_of_move(self, board):
         move = self.make_move(board)
@@ -46,6 +59,9 @@ def set_turn(Player):
 
 def find_index_of_move(Player):
     Player.find_index_of_move(board)
+
+def set_player_turn_position(Player): 
+    Player.get_current_player(turn)
 
 
 

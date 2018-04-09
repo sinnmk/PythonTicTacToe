@@ -145,8 +145,13 @@ class GameEngine(object):
         self.user_interface.display_game_prompt()
         self.user_interface.display_menu()
         menu_choices = [self.player_vs_computer, self.player_vs_player, self.computer_vs_computer, self.display_rules, self.exit_game]
-        menu_choice = int(input(self.input_choice_msg)) - 1 
-        menu_choices[menu_choice]()
+        while True: 
+           try: 
+              menu_choice = int(input(self.input_choice_msg)) - 1 
+           except ValueError: 
+              print("This is not a valid choice")
+           else: 
+              menu_choices[menu_choice]()
 
 if __name__ == "__main__": 
     a = GameEngine()

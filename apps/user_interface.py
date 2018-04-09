@@ -76,7 +76,7 @@ class UserInterface(object):
         while True: 
             try: 
                 choice = int(input(self.user_choice_msg))
-                return choice
             except ValueError: 
                 print(self.invalid_input_msg)
-
+            else: 
+                return choice
