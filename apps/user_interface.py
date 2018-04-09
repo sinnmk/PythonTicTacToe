@@ -6,7 +6,7 @@ class UserInterface(object):
         self.player_choice_msg = ("To go first, enter 1. To go second, enter 2: ")
         self.input_name_msg = ("Please enter your name: ")
         self.user_choice_msg = ("Please enter your menu choice: ")
-        self.invalid_input_msg = ("You have entered an invalid choice, please try again: ")
+        self.invalid_input_msg = ("This is not a valid entry, please try again: ")
 
     def print_example_board(self): 
         example_board = ("""

@@ -10,26 +10,16 @@ class GameEngine(object):
         self.user_interface = UserInterface()
         self.computer_player = Computer()
         self.human_player = Human()
-        self.invalid_input_msg = ("You have given an invalid choice, please try again: ")
         self.menu_choice_msg = ("\nTIC TAC TOE MENU \n1. Player vs Computer \n2. Player vs Player \n3. Computer vs Computer \n4. Display Rules \n5. Quit")
-        self.welcome_pvc_msg = ("Welcome to Player vs Computer Tic Tac Toe!")
         self.invalid_entry_msg = ("This is not a valid entry, please try again: ")
-        self.not_open_msg = ("POSITION TAKEN")
         self.input_choice_msg = ("""Please pick menu choice(1-5): """)
-        self.place_board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self.placeholder_board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self.win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
         self.game_running = True
         self.turns = 0
 
-    def display_players_name(self): 
-        print("It is " + self.human_player.set_name() + " turn")
-
-    def return_one(self): 
-        self.display_players_name()
-        return 1
-
-    def display_board(self, board): 
+    def modify_game_board_list(self, board): 
         game_board_list = []
-
         for i in range(0, 9): 
             if board[i] == 1: 
                 game_board_list.append('X')
@@ -37,6 +27,10 @@ class GameEngine(object):
                 game_board_list.append('O')
             elif board[i] == 0: 
                 game_board_list.append(' ')
+        return game_board_list
+
+    def display_board(self, board): 
+        game_board_list = self.modify_game_board_list(board)
         print("""
          {} | {} | {}
         ---+---+---
@@ -44,22 +38,28 @@ class GameEngine(object):
         ---+---+---
          {} | {} | {}
         """.format(*game_board_list))
-        return game_board_list
+
+    def x_win(self, board): 
+        for i in self.win_combos: 
+            if board[i[0]] == 1 and board[i[1]] == 1 and board[i[2]] == 1: 
+                return True
+
+    def o_win(self, board): 
+        for i in self.win_combos: 
+            if board[i[0]] == 2 and board[i[1]] == 2 and board[i[2]] == 2: 
+                return True
 
     def check_for_win(self, board): 
-        win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
-
-        for i in win_combos:
-            if board[i[0]] == 1 and board[i[1]] == 1 and board[i[2]] == 1: 
-                print("Player X WINS")
-                self.game_running = False
-                exit()
-            if board[i[0]] == 2 and board[i[1]] == 2 and board[i[2]] == 2: 
-                self.game_running = False
-                print("Player O WINS")
-                exit()
-            else: 
-                self.game_running = True
+        if self.x_win(board) == True: 
+            print("Player X WINS")
+            self.game_running = False
+            exit()
+        if self.o_win(board) == True: 
+            self.game_running = False
+            print("Player O WINS")
+            exit()
+        else: 
+            self.game_running = True
 
     def place_x(self, index, board): 
         board[index] = 1
@@ -68,9 +68,8 @@ class GameEngine(object):
         board[index] = 2
 
     def player_vs_computer(self): 
-        board = self.place_board
+        board = self.placeholder_board
         turn_choice = self.human_player.set_turn() 
-
         if turn_choice == 2: 
             while self.game_running:
                self.user_interface.print_example_board()
@@ -113,7 +112,7 @@ class GameEngine(object):
             
 
     def player_vs_player(self): 
-        board = self.place_board
+        board = self.placeholder_board
         print("Player One is 'X', Player Two is 'O'")
         while self.game_running: 
             index = self.human_player.find_index_of_move(board)
@@ -132,7 +131,7 @@ class GameEngine(object):
                self.check_for_win(board)
 
     def computer_vs_computer(self): 
-        board = self.place_board
+        board = self.placeholder_board
         while self.turns < 9: 
             index = self.computer_player.find_index_of_move(board)
             self.turns += 1
@@ -167,7 +166,7 @@ class GameEngine(object):
            try: 
               menu_choice = int(input(self.input_choice_msg)) - 1 
            except ValueError: 
-              print("This is not a valid choice")
+              print(self.invalid_entry_msg)
            else: 
               menu_choices[menu_choice]()
 

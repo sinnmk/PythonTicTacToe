@@ -1,4 +1,5 @@
 from player import Player 
+from copy import deepcopy
 import random
 
 class Computer(Player): 
@@ -9,29 +10,29 @@ class Computer(Player):
 
     def get_possible_win_combos(self, board): 
         winning_moves = []
-        for combo in self.win_combos: 
-            if board[combo[0]] == 1 and board[combo[1]] == 1 and board[combo[2]] == 0: 
-                moves = self.num_board[combo[2]]
+        for i in self.win_combos: 
+            if board[i[0]] == 1 and board[i[1]] == 1 and board[i[2]] == 0: 
+                moves = self.num_board[i[2]]
                 winning_moves.append(moves)
-            if board[combo[0]] == 0 and board[combo[1]] == 1 and board[combo[2]] == 1: 
-                moves = self.num_board[combo[0]]
+            if board[i[0]] == 0 and board[i[1]] == 1 and board[i[2]] == 1: 
+                moves = self.num_board[i[0]]
                 winning_moves.append(moves)
-            if board[combo[0]] == 1 and board[combo[1]] == 0 and board[combo[2]] == 1: 
-                moves = self.num_board[combo[1]]
+            if board[i[0]] == 1 and board[i[1]] == 0 and board[i[2]] == 1: 
+                moves = self.num_board[i[1]]
                 winning_moves.append(moves)
         return winning_moves
 
     def get_possible_lose_combos(self, board):
         blocking_moves = []
-        for combo in self.win_combos: 
-            if board[combo[0]] == 2 and board[combo[1]] == 2 and board[combo[2]] == 0: 
-                moves = self.num_board[combo[2]]
+        for i in self.win_combos: 
+            if board[i[0]] == 2 and board[i[1]] == 2 and board[i[2]] == 0: 
+                moves = self.num_board[i[2]]
                 blocking_moves.append(moves)
-            if board[combo[0]] == 0 and board[combo[1]] == 2 and board[combo[2]] == 2: 
-                moves = self.num_board[combo[0]]
+            if board[i[0]] == 0 and board[i[1]] == 2 and board[i[2]] == 2: 
+                moves = self.num_board[i[0]]
                 blocking_moves.append(moves)
-            if board[combo[0]] == 2 and board[combo[1]] == 0 and board[combo[2]] == 2: 
-                moves = self.num_board[combo[1]]
+            if board[i[0]] == 2 and board[i[1]] == 0 and board[i[2]] == 2: 
+                moves = self.num_board[i[1]]
                 blocking_moves.append(moves)
         return blocking_moves
 
@@ -74,4 +75,7 @@ class Computer(Player):
         choice = random.choice(turn_choices)
         return choice
 
-    
+if __name__ == "__main__": 
+    a = Computer()
+    board = [1, 1, 0, 2, 2, 1, 2, 0, 0]
+    a.get_best_move(board)
