@@ -1,9 +1,13 @@
 ## PythonTicTacToe
 
-####Apprenticeship Project: Create a Tic Tac Toe game in Python
-**Features:** Menu, Player VS Player, Computer VS Computer, Player VS Computer, can choose turn in PvC, Intermediate Computer Logic
+**Apprenticeship Project:** Create a Tic Tac Toe game in Python
 
-####SET UP
+**Current Features:** Menu, Player VS Player, Computer VS Computer, Player VS Computer, can choose turn in PvC, Intermediate Computer Logic
+
+**TO-DO Features:** Unbeatable AI
+
+**-----Initial Setup-----**
+
 **Python Version:** 3.3
 
 **Testing:** Unittest
