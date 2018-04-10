@@ -55,100 +55,77 @@ class GameEngine(object):
             self.game_running = False
             exit()
         if self.o_win(board) == True: 
-            self.game_running = False
             print("Player O WINS")
+            self.game_running = False
             exit()
         else: 
             self.game_running = True
 
-    def place_x(self, index, board): 
-        board[index] = 1
+    def finish_turn(self, board): 
+        self.turns += 1
+        self.display_board(board)
+        self.check_for_win(board)
+        time.sleep(1)
 
-    def place_o(self, index, board): 
-        board[index] = 2
+    def out_of_turns(self): 
+        return self.turns == 9
 
     def player_vs_computer(self): 
         board = self.placeholder_board
         turn_choice = self.human_player.set_turn() 
         if turn_choice == 2: 
             while self.game_running:
-               self.user_interface.print_example_board()
                index = self.computer_player.find_index_of_move(board)
-               self.turns += 1
-               self.check_for_win(board)
-               self.place_x(index, board)
-               self.display_board(board)
-               time.sleep(1)
-               if self.turns == 9: 
-                  print("CAT GAME")
+               self.computer_player.make_move(index, board, player_num = 1)
+               self.finish_turn(board)
+               if self.out_of_turns(): 
+                  print("It is a CAT GAME")
                   break 
                else: 
-
                   index = self.human_player.find_index_of_move(board)
-                  self.turns += 1
-                  self.place_o(index, board)
-                  self.display_board(board)
-                  self.check_for_win(board)
-                  time.sleep(1)
+                  self.human_player.make_move(index, board, player_num = 2)
+                  self.finish_turn(board)
         if turn_choice == 1: 
             while self.game_running:
-               self.user_interface.print_example_board()
                index = self.human_player.find_index_of_move(board)
-               self.turns += 1
-               self.check_for_win(board)
-               self.place_x(index, board)
-               self.display_board(board)
-               time.sleep(1)
-               if self.turns == 9: 
-                  print("CAT GAME")
+               self.human_player.make_move(index, board, player_num = 1)
+               self.finish_turn(board)
+               if self.out_of_turns(): 
+                  print("It is a CAT GAME")
                   break 
                else: 
                   index = self.computer_player.find_index_of_move(board)
-                  self.turns += 1
-                  self.place_o(index, board)
-                  self.display_board(board)
-                  self.check_for_win(board)
-                  time.sleep(1)
-            
+                  self.computer_player.make_move(index, board, player_num = 2)
+                  self.finish_turn(board)
 
     def player_vs_player(self): 
         board = self.placeholder_board
         print("Player One is 'X', Player Two is 'O'")
         while self.game_running: 
             index = self.human_player.find_index_of_move(board)
-            self.turns += 1
-            self.place_x(index, board)
-            self.display_board(board)
-            self.check_for_win(board)
-            if self.turns == 9: 
-               print("CAT GAME")
+            self.human_player.make_move(index, board, player_num = 1)
+            self.finish_turn(board)
+            if self.out_of_turns(): 
+               print("It is a CAT GAME")
                break 
             else: 
                index = self.human_player.find_index_of_move(board)
-               self.turns += 1
-               self.place_o(index, board)
-               self.display_board(board)
-               self.check_for_win(board)
+               self.human_player.make_move(index, board, player_num = 2)
+               self.finish_turn(board)
 
     def computer_vs_computer(self): 
         board = self.placeholder_board
-        while self.turns < 9: 
+        while self.game_running: 
             index = self.computer_player.find_index_of_move(board)
-            self.turns += 1
-            self.place_x(index, board)
-            self.display_board(board)
-            self.check_for_win(board)
-            time.sleep(1)
-            if self.turns == 9: 
-               print("CAT GAME")
+            self.computer_player.make_move(index, board, player_num = 1)
+            self.finish_turn(board)
+            if self.out_of_turns(): 
+               print("It is a CAT GAME")
                break 
             else: 
                index = self.computer_player.find_index_of_move(board)
-               self.turns += 1
-               self.place_o(index, board)
-               self.display_board(board)
-               self.check_for_win(board)
-               time.sleep(1)
+               self.computer_player.make_move(index, board, player_num = 2)
+               self.finish_turn(board)
             
     def display_rules(self): 
         self.user_interface.display_rules()

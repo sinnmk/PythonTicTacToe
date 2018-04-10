@@ -36,6 +36,7 @@ class Computer(Player):
                 blocking_moves.append(moves)
         return blocking_moves
 
+
     def get_open_positions(self, board): 
         open_positions = []
         i = 0
@@ -48,9 +49,7 @@ class Computer(Player):
                 i += 1
         return open_positions
 
-    def make_move(self, board):
-        i = 0
-        open_positions = [] 
+    def get_move(self, board):
         winning_moves = self.get_possible_win_combos(board)
         blocking_moves = self.get_possible_lose_combos(board)
         open_positions = self.get_open_positions(board)
@@ -70,10 +69,6 @@ class Computer(Player):
         name = "Computer"
         return name
 
-    def set_turn(self): 
-        turn_choices = [1, 2]
-        choice = random.choice(turn_choices)
-        return choice
 
 if __name__ == "__main__": 
     a = Computer()

@@ -8,7 +8,7 @@ class Human(Player):
         self.stored_moves = [] 
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    def make_move(self, board): 
+    def get_move(self, board): 
         move = self.user_interface.input_move(board)
         return move
 
