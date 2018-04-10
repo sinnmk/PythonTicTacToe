@@ -12,7 +12,7 @@ class TestComputer(unittest.TestCase):
 
     def test_make_move_based_on_empty_spots_left(self): 
         board = [1, 1, 2, 2, 0, 1, 1, 2, 2]
-        move = self.computer.make_move(board) 
+        move = self.computer.get_move(board) 
         self.assertEqual(move, 5)
 
     def test_computer_can_get_possible_1_2_3_horizontal_win(self): 
@@ -57,43 +57,54 @@ class TestComputer(unittest.TestCase):
 
     def test_computer_can_block_1_2_3_possible_win_combo(self): 
         board = [1, 1, 0, 0, 0, 0, 0, 0, 0]
-        next_move = self.computer.make_move(board)
+        next_move = self.computer.get_move(board)
         self.assertEqual(next_move, 3)
 
     def test_computer_can_block_4_5_6_possible_win_combo(self): 
         board = [0, 0, 0, 1, 1, 0, 0, 0, 0]
-        next_move = self.computer.make_move(board)
+        next_move = self.computer.get_move(board)
         self.assertEqual(next_move, 6)
 
     def test_computer_can_block_7_8_9_possible_win_combo(self): 
         board = [0, 0, 0, 0, 0, 0, 1, 1, 0]
-        next_move = self.computer.make_move(board)
+        next_move = self.computer.get_move(board)
         self.assertEqual(next_move, 9)
 
     def test_computer_can_block_1_4_7_possible_win_combo(self): 
         board = [0, 0, 0, 1, 0, 0, 1, 0, 0]
-        next_move = self.computer.make_move(board)
+        next_move = self.computer.get_move(board)
         self.assertEqual(next_move, 1)
         
     def test_computer_can_block_2_5_8_possible_win_combo(self): 
         board = [0, 1, 0, 0, 0, 0, 0, 1, 0]
-        next_move = self.computer.make_move(board)
+        next_move = self.computer.get_move(board)
         self.assertEqual(next_move, 5)
 
     def test_computer_can_block_3_6_9_possible_win_combo(self): 
         board = [0, 0, 1, 0, 0, 0, 0, 0, 1]
-        next_move = self.computer.make_move(board)
+        next_move = self.computer.get_move(board)
         self.assertEqual(next_move, 6)
 
     def test_computer_can_block_1_5_9_possible_win_combo(self): 
         board = [0, 0, 0, 0, 1, 0, 0, 0, 1]
-        next_move = self.computer.make_move(board)
+        next_move = self.computer.get_move(board)
         self.assertEqual(next_move, 1)
 
     def test_computer_can_block_3_5_7_possible_win_combo(self): 
         board = [0, 0, 1, 0, 1, 0, 0, 0, 0]
-        next_move = self.computer.make_move(board)
+        next_move = self.computer.get_move(board)
         self.assertEqual(next_move, 7)
+
+    def test_can_get_open_positions(self): 
+        board = [1, 2, 1, 2, 0, 0, 1, 2, 0]
+        open_positions = self.computer.get_open_positions(board)
+        self.assertEqual(open_positions, ['', '', '', '', 5, 6, '', '', 9])
+
+    def test_can_set_name(self): 
+        name = self.computer.set_name()
+        self.assertEqual(name, "Computer")
+
+
 
     
 

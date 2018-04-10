@@ -1,5 +1,5 @@
-from user_interface import UserInterface
-from player import Player
+from apps.user_interface import UserInterface
+from apps.player import Player
 
 class Human(Player): 
 

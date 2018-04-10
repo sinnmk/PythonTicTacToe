@@ -1,5 +1,4 @@
-from player import Player 
-from copy import deepcopy
+from apps.player import Player 
 import random
 
 class Computer(Player): 
@@ -36,7 +35,6 @@ class Computer(Player):
                 blocking_moves.append(moves)
         return blocking_moves
 
-
     def get_open_positions(self, board): 
         open_positions = []
         i = 0
@@ -63,14 +61,9 @@ class Computer(Player):
         if move in open_positions: 
             return move
         else: 
-            return self.make_move(board)
+            return self.get_move(board)
 
     def set_name(self): 
         name = "Computer"
         return name
 
-
-if __name__ == "__main__": 
-    a = Computer()
-    board = [1, 1, 0, 2, 2, 1, 2, 0, 0]
-    a.get_best_move(board)

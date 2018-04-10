@@ -1,7 +1,7 @@
-from user_interface import UserInterface 
-from player import Player
-from human import Human
-from computer import Computer
+from apps.user_interface import UserInterface 
+from apps.player import Player
+from apps.human import Human
+from apps.computer import Computer
 import time
 
 class GameEngine(object): 
@@ -43,11 +43,15 @@ class GameEngine(object):
         for i in self.win_combos: 
             if board[i[0]] == 1 and board[i[1]] == 1 and board[i[2]] == 1: 
                 return True
+            else: 
+                return False
 
     def o_win(self, board): 
         for i in self.win_combos: 
             if board[i[0]] == 2 and board[i[1]] == 2 and board[i[2]] == 2: 
                 return True
+            else: 
+                return False
 
     def check_for_win(self, board): 
         if self.x_win(board) == True: 
