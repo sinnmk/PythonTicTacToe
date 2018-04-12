@@ -22,20 +22,11 @@ class TestGameEngine(unittest.TestCase):
         x_win = self.game_engine.x_win(board)
         self.assertEqual(x_win, True)
 
-    def test_x_no_win(self): 
-        board = [0, 1, 0, 0, 0, 0, 2, 0, 0]
-        no_win = self.game_engine.x_win(board)
-        self.assertEqual(no_win, False)
-
     def test_o_can_win(self): 
         board = [2, 2, 2, 0, 0, 0, 0, 0, 0]
         o_win = self.game_engine.o_win(board)
         self.assertEqual(o_win, True)
 
-    def test_o_no_win(self): 
-        board = [0, 2, 0, 0, 0, 0, 1, 0, 0]
-        no_win = self.game_engine.o_win(board)
-        self.assertEqual(no_win, False)
 
 
 
