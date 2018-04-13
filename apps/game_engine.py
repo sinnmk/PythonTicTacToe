@@ -73,134 +73,106 @@ class GameEngine(object):
     def out_of_turns(self):
         return self.turns == 9
 
-    def count_x(self, board): 
-        x_moves = []
-        i = 0
-        while i < len(board): 
-            for marker in board: 
-                if marker == 1: 
-                    x_moves.append(marker)
-                i += 1
-            return x_moves
+    def count_x(self):
+        x_moves = [marker for marker in self.placeholder_board if marker == 1]
+        return x_moves
 
-    def count_o(self, board): 
-        o_moves = []
-        i = 0
-        while i < len(board): 
-            for marker in board: 
-                if marker == 2: 
-                    o_moves.append(marker)
-                i += 1
-            return o_moves
-    
-    def turn_counter(self, x_moves, o_moves): 
+    def count_o(self):
+        o_moves = [marker for marker in self.placeholder_board if marker == 2]
+        return o_moves
 
-        #NOT COMPLETED
-
-        #figure out how to use a turn counter to set the marker of each player instead of hardcoding it 
-
-        #figure out how to properly assign the player num in computer vs computer 
-
-        if len(x_moves) == 0 and len(o_moves) == 0: 
-            player_num = 1
-            print(player_num)
-            return player_num
+    def turn_counter(self, x_moves, o_moves):
+        x = 1
+        o = 2
+        if len(x_moves) == 0 and len(o_moves) == 0:
+            player_marker = x
+            return player_marker
         elif len(x_moves) > len(o_moves):
-            player_num = 2
-            print(player_num)
-            return player_num
-        elif len(o_moves) > len(x_moves): 
-            player_num = 1
-            print(player_num)
-            return player_num
-
-   # def turn_counter(self, board): 
-   #     x_moves = []
-   #     o_moves = []
-   #     for num in board: 
-   #         if num == 1: 
-   #             x_moves.append(num)
-   #         if num == 2: 
-   #             o_moves.append(num)
-   #     if len(x_moves) == 0: 
-   #         player_num = 1
-   #         return player_num
-   #     if len(x_moves) > len(o_moves): 
-   #         print("o_turn")
-   #         player_num = 2
-   #         return player_num
-   #     if len(o_moves) > len(x_moves): 
-   #         print("x_turn")
-   #         player_num = 1
-   #         return player_num
-   #     if len(x_moves) == len(o_moves): 
-   #         player_num = 1
-   #         return player_num
+            player_marker = o
+            return player_marker
+        elif len(o_moves) >= len(x_moves):
+            player_marker = x
+            return player_marker
 
     def player_vs_computer(self):
-        pass
-  #      board = self.placeholder_board
-  #      turn_choice = self.human_player.set_turn()
-  #      if turn_choice == 2:
-  #          while self.game_running:
-  #             index = self.computer_player.find_index_of_move(board)
-  #             self.computer_player.make_move(index, board, player_num = 1)
-  #             self.finish_turn(board)
-  #             if self.out_of_turns():
-  #                print("It is a CAT GAME")
-  #                break
-  #             else:
-  #                index = self.human_player.find_index_of_move(board)
-  #                self.human_player.make_move(index, board, player_num = 2)
-  #                self.finish_turn(board)
-  #      if turn_choice == 1:
-  #          while self.game_running:
-  #             index = self.human_player.find_index_of_move(board)
-  #             self.human_player.make_move(index, board, player_num = 1)
-  #             self.finish_turn(board)
-  #             if self.out_of_turns():
-  #                print("It is a CAT GAME")
-  #                break
-  #             else:
-  #                index = self.computer_player.find_index_of_move(board)
-  #                self.computer_player.make_move(index, board, player_num = 2)
-  #                self.finish_turn(board)
+        board = self.placeholder_board
+        turn_choice = self.human_player.set_turn()
+        if turn_choice == 2:
+            while self.game_running:
+               index = self.computer_player.find_index_of_move(board)
+               x_moves = self.count_x()
+               o_moves = self.count_o()
+               player_marker = self.turn_counter(x_moves, o_moves)
+               self.computer_player.make_move(index, board, player_marker)
+               self.finish_turn(board)
+               if self.out_of_turns():
+                  print("It is a CAT GAME")
+                  break
+               else:
+                  index = self.human_player.find_index_of_move(board)
+                  x_moves = self.count_x()
+                  o_moves = self.count_o()
+                  player_marker = self.turn_counter(x_moves, o_moves)
+                  self.human_player.make_move(index, board, player_marker)
+                  self.finish_turn(board)
+        if turn_choice == 1:
+            while self.game_running:
+               index = self.human_player.find_index_of_move(board)
+               x_moves = self.count_x()
+               o_moves = self.count_o()
+               player_num = self.turn_counter(x_moves, o_moves)
+               self.human_player.make_move(index, board, player_marker)
+               self.finish_turn(board)
+               if self.out_of_turns():
+                  print("It is a CAT GAME")
+                  break
+               else:
+                  index = self.computer_player.find_index_of_move(board)
+                  x_moves = self.count_x()
+                  o_moves = self.count_o()
+                  player_num = self.turn_counter(x_moves, o_moves)
+                  self.computer_player.make_move(index, board, player_marker)
+                  self.finish_turn(board)
 
     def player_vs_player(self):
-        pass
-  #      board = self.placeholder_board
-  #      print("Player One is 'X', Player Two is 'O'")
-  #      while self.game_running:
-  #          index = self.human_player.find_index_of_move(board)
-  #          self.human_player.make_move(index, board, player_num = 1)
-  #          self.finish_turn(board)
-  #          if self.out_of_turns():
-  #             print("It is a CAT GAME")
-  #             break
-  #          else:
-  #             index = self.human_player.find_index_of_move(board)
-  #             self.human_player.make_move(index, board, player_num = 2)
-  #             self.finish_turn(board)
-
-    def computer_vs_computer(self):
-
-        #figure out how to use player num as parameter instead of hard coding the number
-
         board = self.placeholder_board
-        x_moves = self.count_x(board)
-        o_moves = self.count_o(board)
+        print("Player One is 'X', Player Two is 'O'")
         while self.game_running:
-            player_num = self.turn_counter(x_moves, o_moves)
-            index = self.computer_player.find_index_of_move(board)
-            self.computer_player.make_move(index, board, player_num)
+            x_moves = self.count_x()
+            o_moves = self.count_o()
+            player_marker = self.turn_counter(x_moves, o_moves)
+            index = self.human_player.find_index_of_move(board)
+            self.human_player.make_move(index, board, player_marker)
             self.finish_turn(board)
             if self.out_of_turns():
                print("It is a CAT GAME")
                break
             else:
-               player_num = self.turn_counter(x_moves, o_moves)
+               x_moves = self.count_x()
+               o_moves = self.count_o()
+               player_marker = self.turn_counter(x_moves, o_moves)
+               index = self.human_player.find_index_of_move(board)
+               self.human_player.make_move(index, board, player_marker)
+               self.finish_turn(board)
+
+    def computer_vs_computer(self):
+        board = self.placeholder_board
+        while self.game_running:
+            x_moves = self.count_x()
+            o_moves = self.count_o()
+            player_marker = self.turn_counter(x_moves, o_moves)
+            index = self.computer_player.find_index_of_move(board)
+            self.computer_player.make_move(index, board, player_marker)
+            self.finish_turn(board)
+            if self.out_of_turns():
+               print("It is a CAT GAME")
+               break
+            else:
+               x_moves = self.count_x()
+               o_moves = self.count_o()
+               player_marker = self.turn_counter(x_moves, o_moves)
                index = self.computer_player.find_index_of_move(board)
-               self.computer_player.make_move(index, board, player_num)
+               self.computer_player.make_move(index, board, player_marker)
                self.finish_turn(board)
 
     def display_rules(self):
@@ -224,9 +196,4 @@ class GameEngine(object):
 
 if __name__ == "__main__":
     a = GameEngine()
-    board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    x_moves = a.count_x(board)
-    o_moves = a. count_o(board) 
-    a.turn_counter(x_moves, o_moves)
-    a.computer_vs_computer()
-
+    a.choose_menu_choice()
