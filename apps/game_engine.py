@@ -2,6 +2,7 @@ from user_interface import UserInterface
 from player import Player
 from human import Human
 from computer import Computer
+from minimax import Minimax
 import time
 
 
@@ -9,6 +10,7 @@ class GameEngine(object):
 
     def __init__(self):
         self.user_interface = UserInterface()
+        self.minimax = Minimax()
         self.computer_player = Computer()
         self.human_player = Human()
         self.menu_choice_msg = ("\nTIC TAC TOE MENU \n1. Player vs Computer \n2. Player vs Player \n3. Computer vs Computer \n4. Display Rules \n5. Quit")
@@ -24,6 +26,9 @@ class GameEngine(object):
         self.turns = 0
         self.x_moves = 0
         self.o_moves = 0
+
+    def exit_game(self):
+        return exit()
 
     def modify_game_board_list(self, board):
         game_board_list = []
@@ -68,12 +73,6 @@ class GameEngine(object):
         else:
             self.game_running = True
 
-    def finish_turn(self, board):
-        self.turns += 1
-        self.display_board(board)
-        self.check_for_win(board)
-        time.sleep(1)
-
     def out_of_turns(self):
         return self.turns == 9
 
@@ -96,31 +95,39 @@ class GameEngine(object):
             player_marker = 1
             return player_marker
 
+    def take_turn(self, player): 
+        board = self.placeholder_board
+        index = player.find_index_of_move(board)
+        x_moves, o_moves = self.all_moves()
+        player_marker = self.set_player_marker(x_moves, o_moves)
+        player.make_move(index, board, player_marker)
+
+    def pause(self): 
+        return time.sleep(1)
+
     def run_game(self, player):
-       board = self.placeholder_board
-       index = player.find_index_of_move(board)
-       x_moves, o_moves = self.all_moves()
-       player_marker = self.set_player_marker(x_moves, o_moves)
-       player.make_move(index, board, player_marker)
-       self.finish_turn(board)
-       if self.out_of_turns():
-          print(self.catgame_msg)
-          quit()
-       else:
-          index = player.find_index_of_move(board)
-          x_moves, o_moves = self.all_moves()
-          player_marker = self.set_player_marker(x_moves, o_moves)
-          player.make_move(index, board, player_marker)
-          self.finish_turn(board)
+        board = self.placeholder_board
+        self.take_turn(player)
+        self.turns += 1
+        self.display_board(board)
+        self.check_for_win(board)
+        self.pause()
+        if self.out_of_turns():
+           print(self.catgame_msg)
+           self.exit_game()
+        else:
+           self.take_turn(player)
+           self.turns += 1
+           self.display_board(board)
+           self.check_for_win(board)
+           self.pause()
 
     def player_vs_computer(self):
         board = self.placeholder_board
         turn_choice = self.human_player.set_turn()
         while self.game_running:
-
             if turn_choice == 2:
                 self.run_game(self.computer_player)
-
             if turn_choice == 1:
                 self.run_game(self.human_player)
 
@@ -128,20 +135,16 @@ class GameEngine(object):
         board = self.placeholder_board
         while self.game_running:
             self.run_game(self.human_player)
-            self.run_game(self.human_player)
 
     def computer_vs_computer(self):
         board = self.placeholder_board
         while self.game_running:
-            self.run_game(self.computer_player)
             self.run_game(self.computer_player)
 
     def display_rules(self):
         self.user_interface.display_rules()
         return self.choose_menu_choice()
 
-    def exit_game(self):
-        return exit()
 
     def choose_menu_choice(self):
         self.user_interface.display_game_prompt()
