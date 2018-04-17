@@ -105,6 +105,10 @@ class GameEngine(object):
     def pause(self): 
         return time.sleep(1)
 
+    def save_game_state(self, board): 
+        game_state = board[:]
+        return game_state 
+
     def run_game(self, player):
         board = self.placeholder_board
         self.take_turn(player)
@@ -144,7 +148,6 @@ class GameEngine(object):
     def display_rules(self):
         self.user_interface.display_rules()
         return self.choose_menu_choice()
-
 
     def choose_menu_choice(self):
         self.user_interface.display_game_prompt()

@@ -12,31 +12,29 @@ class Computer(Player):
         winning_moves = []
         for i in self.win_combos:
             if board[i[0]] == 1 and board[i[1]] == 1 and board[i[2]] == 0:
-                moves = self.num_board[i[2]]
-                winning_moves.append(moves)
+                move = self.num_board[i[2]]
+                winning_moves.append(move)
             if board[i[0]] == 0 and board[i[1]] == 1 and board[i[2]] == 1:
-                moves = self.num_board[i[0]]
-                winning_moves.append(moves)
+                move = self.num_board[i[0]]
+                winning_moves.append(move)
             if board[i[0]] == 1 and board[i[1]] == 0 and board[i[2]] == 1:
-                moves = self.num_board[i[1]]
-                winning_moves.append(moves)
+                move = self.num_board[i[1]]
+                winning_moves.append(move)
         return winning_moves
-
 
     def get_possible_lose_combos(self, board):
         blocking_moves = []
         for i in self.win_combos:
             if board[i[0]] == 2 and board[i[1]] == 2 and board[i[2]] == 0:
-                moves = self.num_board[i[2]]
-                blocking_moves.append(moves)
+                move = self.num_board[i[2]]
+                blocking_moves.append(move)
             if board[i[0]] == 0 and board[i[1]] == 2 and board[i[2]] == 2:
-                moves = self.num_board[i[0]]
-                blocking_moves.append(moves)
+                move = self.num_board[i[0]]
+                blocking_moves.append(move)
             if board[i[0]] == 2 and board[i[1]] == 0 and board[i[2]] == 2:
-                moves = self.num_board[i[1]]
-                blocking_moves.append(moves)
+                move = self.num_board[i[1]]
+                blocking_moves.append(move)
         return blocking_moves
-
 
     def get_open_positions(self, board):
         copy_board = board[:]
@@ -50,7 +48,6 @@ class Computer(Player):
                     open_positions.append("")
                 i += 1
         return open_positions
-
 
     def get_move(self, board):
         winning_moves = self.get_possible_win_combos(board)
@@ -67,7 +64,6 @@ class Computer(Player):
             return move
         else:
             return self.get_move(board)
-
 
     def set_name(self):
         name = "Computer"
