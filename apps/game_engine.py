@@ -2,7 +2,6 @@ from user_interface import UserInterface
 from player import Player
 from human import Human
 from computer import Computer
-from minimax import Minimax
 import time
 
 class GameEngine(object):
@@ -73,36 +72,34 @@ class GameEngine(object):
     def out_of_turns(self):
         return self.turns == 9
 
-    def count_x(self):
-        x_moves = [marker for marker in self.placeholder_board if marker == 1]
-        return x_moves
+    def all_moves(self): 
+        board = self.placeholder_board
+        x_moves = [marker for marker in board if marker == 1]
+        o_moves = [marker for marker in board if marker == 2]
+        return x_moves, o_moves
 
-    def count_o(self):
-        o_moves = [marker for marker in self.placeholder_board if marker == 2]
-        return o_moves
-
-    def turn_counter(self, x_moves, o_moves):
-        x = 1
-        o = 2
+    def set_player_marker(self, x_moves, o_moves):
         if len(x_moves) == 0 and len(o_moves) == 0:
-            player_marker = x
+            player_marker = 1
             return player_marker
+
         elif len(x_moves) > len(o_moves):
-            player_marker = o
+            player_marker = 2
             return player_marker
+
         elif len(o_moves) >= len(x_moves):
-            player_marker = x
+            player_marker = 1
             return player_marker
 
     def player_vs_computer(self):
         board = self.placeholder_board
         turn_choice = self.human_player.set_turn()
+
         if turn_choice == 2:
             while self.game_running:
                index = self.computer_player.find_index_of_move(board)
-               x_moves = self.count_x()
-               o_moves = self.count_o()
-               player_marker = self.turn_counter(x_moves, o_moves)
+               x_moves, o_moves = self.all_moves()
+               player_marker = self.set_player_marker(x_moves, o_moves)
                self.computer_player.make_move(index, board, player_marker)
                self.finish_turn(board)
                if self.out_of_turns():
@@ -110,17 +107,16 @@ class GameEngine(object):
                   break
                else:
                   index = self.human_player.find_index_of_move(board)
-                  x_moves = self.count_x()
-                  o_moves = self.count_o()
-                  player_marker = self.turn_counter(x_moves, o_moves)
+                  x_moves, o_moves = self.all_moves()
+                  player_marker = self.set_player_marker(x_moves, o_moves)
                   self.human_player.make_move(index, board, player_marker)
                   self.finish_turn(board)
+
         if turn_choice == 1:
             while self.game_running:
                index = self.human_player.find_index_of_move(board)
-               x_moves = self.count_x()
-               o_moves = self.count_o()
-               player_num = self.turn_counter(x_moves, o_moves)
+               x_moves, o_moves = self.all_moves()
+               player_marker = self.set_player_marker(x_moves, o_moves)
                self.human_player.make_move(index, board, player_marker)
                self.finish_turn(board)
                if self.out_of_turns():
@@ -128,9 +124,8 @@ class GameEngine(object):
                   break
                else:
                   index = self.computer_player.find_index_of_move(board)
-                  x_moves = self.count_x()
-                  o_moves = self.count_o()
-                  player_num = self.turn_counter(x_moves, o_moves)
+                  x_moves, o_moves = self.all_moves()
+                  player_marker = self.set_player_marker(x_moves, o_moves)
                   self.computer_player.make_move(index, board, player_marker)
                   self.finish_turn(board)
 
@@ -138,9 +133,8 @@ class GameEngine(object):
         board = self.placeholder_board
         print("Player One is 'X', Player Two is 'O'")
         while self.game_running:
-            x_moves = self.count_x()
-            o_moves = self.count_o()
-            player_marker = self.turn_counter(x_moves, o_moves)
+            x_moves, o_moves = self.all_moves()
+            player_marker = self.set_player_marker(x_moves, o_moves)
             index = self.human_player.find_index_of_move(board)
             self.human_player.make_move(index, board, player_marker)
             self.finish_turn(board)
@@ -148,9 +142,8 @@ class GameEngine(object):
                print("It is a CAT GAME")
                break
             else:
-               x_moves = self.count_x()
-               o_moves = self.count_o()
-               player_marker = self.turn_counter(x_moves, o_moves)
+               x_moves, o_moves = self.all_moves()
+               player_marker = self.set_player_marker(x_moves, o_moves)
                index = self.human_player.find_index_of_move(board)
                self.human_player.make_move(index, board, player_marker)
                self.finish_turn(board)
@@ -158,9 +151,8 @@ class GameEngine(object):
     def computer_vs_computer(self):
         board = self.placeholder_board
         while self.game_running:
-            x_moves = self.count_x()
-            o_moves = self.count_o()
-            player_marker = self.turn_counter(x_moves, o_moves)
+            x_moves, o_moves = self.all_moves()
+            player_marker = self.set_player_marker(x_moves, o_moves)
             index = self.computer_player.find_index_of_move(board)
             self.computer_player.make_move(index, board, player_marker)
             self.finish_turn(board)
@@ -168,12 +160,12 @@ class GameEngine(object):
                print("It is a CAT GAME")
                break
             else:
-               x_moves = self.count_x()
-               o_moves = self.count_o()
-               player_marker = self.turn_counter(x_moves, o_moves)
+               x_moves, o_moves = self.all_moves()
+               player_marker = self.set_player_marker(x_moves, o_moves)
                index = self.computer_player.find_index_of_move(board)
                self.computer_player.make_move(index, board, player_marker)
                self.finish_turn(board)
+
 
     def display_rules(self):
         self.user_interface.display_rules()
