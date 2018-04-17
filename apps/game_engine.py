@@ -4,6 +4,7 @@ from human import Human
 from computer import Computer
 import time
 
+
 class GameEngine(object):
 
     def __init__(self):
@@ -13,6 +14,10 @@ class GameEngine(object):
         self.menu_choice_msg = ("\nTIC TAC TOE MENU \n1. Player vs Computer \n2. Player vs Player \n3. Computer vs Computer \n4. Display Rules \n5. Quit")
         self.invalid_entry_msg = ("This is not a valid entry, please try again: ")
         self.input_choice_msg = ("""Please pick menu choice(1-5): """)
+        self.catgame_msg = ("CAT GAME! Better luck next time!")
+        self.pvp_prompt_msg = ("X goes first, O goes second.")
+        self.x_win_msg = ("Player X wins")
+        self.o_win_msg = ("Player O wins")
         self.placeholder_board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
         self.game_running = True
@@ -53,11 +58,11 @@ class GameEngine(object):
 
     def check_for_win(self, board):
         if self.x_win(board) == True:
-            print("Player X WINS")
+            print(self.x_win_msg)
             self.game_running = False
             exit()
         if self.o_win(board) == True:
-            print("Player O WINS")
+            print(self.o_win_msg)
             self.game_running = False
             exit()
         else:
@@ -91,81 +96,45 @@ class GameEngine(object):
             player_marker = 1
             return player_marker
 
+    def run_game(self, player):
+       board = self.placeholder_board
+       index = player.find_index_of_move(board)
+       x_moves, o_moves = self.all_moves()
+       player_marker = self.set_player_marker(x_moves, o_moves)
+       player.make_move(index, board, player_marker)
+       self.finish_turn(board)
+       if self.out_of_turns():
+          print(self.catgame_msg)
+          quit()
+       else:
+          index = player.find_index_of_move(board)
+          x_moves, o_moves = self.all_moves()
+          player_marker = self.set_player_marker(x_moves, o_moves)
+          player.make_move(index, board, player_marker)
+          self.finish_turn(board)
+
     def player_vs_computer(self):
         board = self.placeholder_board
         turn_choice = self.human_player.set_turn()
+        while self.game_running:
 
-        if turn_choice == 2:
-            while self.game_running:
-               index = self.computer_player.find_index_of_move(board)
-               x_moves, o_moves = self.all_moves()
-               player_marker = self.set_player_marker(x_moves, o_moves)
-               self.computer_player.make_move(index, board, player_marker)
-               self.finish_turn(board)
-               if self.out_of_turns():
-                  print("It is a CAT GAME")
-                  break
-               else:
-                  index = self.human_player.find_index_of_move(board)
-                  x_moves, o_moves = self.all_moves()
-                  player_marker = self.set_player_marker(x_moves, o_moves)
-                  self.human_player.make_move(index, board, player_marker)
-                  self.finish_turn(board)
+            if turn_choice == 2:
+                self.run_game(self.computer_player)
 
-        if turn_choice == 1:
-            while self.game_running:
-               index = self.human_player.find_index_of_move(board)
-               x_moves, o_moves = self.all_moves()
-               player_marker = self.set_player_marker(x_moves, o_moves)
-               self.human_player.make_move(index, board, player_marker)
-               self.finish_turn(board)
-               if self.out_of_turns():
-                  print("It is a CAT GAME")
-                  break
-               else:
-                  index = self.computer_player.find_index_of_move(board)
-                  x_moves, o_moves = self.all_moves()
-                  player_marker = self.set_player_marker(x_moves, o_moves)
-                  self.computer_player.make_move(index, board, player_marker)
-                  self.finish_turn(board)
+            if turn_choice == 1:
+                self.run_game(self.human_player)
 
     def player_vs_player(self):
         board = self.placeholder_board
-        print("Player One is 'X', Player Two is 'O'")
         while self.game_running:
-            x_moves, o_moves = self.all_moves()
-            player_marker = self.set_player_marker(x_moves, o_moves)
-            index = self.human_player.find_index_of_move(board)
-            self.human_player.make_move(index, board, player_marker)
-            self.finish_turn(board)
-            if self.out_of_turns():
-               print("It is a CAT GAME")
-               break
-            else:
-               x_moves, o_moves = self.all_moves()
-               player_marker = self.set_player_marker(x_moves, o_moves)
-               index = self.human_player.find_index_of_move(board)
-               self.human_player.make_move(index, board, player_marker)
-               self.finish_turn(board)
+            self.run_game(self.human_player)
+            self.run_game(self.human_player)
 
     def computer_vs_computer(self):
         board = self.placeholder_board
         while self.game_running:
-            x_moves, o_moves = self.all_moves()
-            player_marker = self.set_player_marker(x_moves, o_moves)
-            index = self.computer_player.find_index_of_move(board)
-            self.computer_player.make_move(index, board, player_marker)
-            self.finish_turn(board)
-            if self.out_of_turns():
-               print("It is a CAT GAME")
-               break
-            else:
-               x_moves, o_moves = self.all_moves()
-               player_marker = self.set_player_marker(x_moves, o_moves)
-               index = self.computer_player.find_index_of_move(board)
-               self.computer_player.make_move(index, board, player_marker)
-               self.finish_turn(board)
-
+            self.run_game(self.computer_player)
+            self.run_game(self.computer_player)
 
     def display_rules(self):
         self.user_interface.display_rules()

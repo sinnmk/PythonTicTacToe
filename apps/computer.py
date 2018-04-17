@@ -7,6 +7,7 @@ class Computer(Player):
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
 
+
     def get_possible_win_combos(self, board):
         winning_moves = []
         for i in self.win_combos:
@@ -20,6 +21,7 @@ class Computer(Player):
                 moves = self.num_board[i[1]]
                 winning_moves.append(moves)
         return winning_moves
+
 
     def get_possible_lose_combos(self, board):
         blocking_moves = []
@@ -35,6 +37,7 @@ class Computer(Player):
                 blocking_moves.append(moves)
         return blocking_moves
 
+
     def get_open_positions(self, board):
         copy_board = board[:]
         open_positions = []
@@ -47,6 +50,7 @@ class Computer(Player):
                     open_positions.append("")
                 i += 1
         return open_positions
+
 
     def get_move(self, board):
         winning_moves = self.get_possible_win_combos(board)
@@ -63,6 +67,7 @@ class Computer(Player):
             return move
         else:
             return self.get_move(board)
+
 
     def set_name(self):
         name = "Computer"
