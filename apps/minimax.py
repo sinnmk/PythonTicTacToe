@@ -1,68 +1,95 @@
 import math
+from game_engine import GameEngine
+from computer import Computer
+from human import Human
 
 class Minimax(object):
 
-    def __init__(self):
+    def __init__(self): 
+        self.win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
+        self.game_running = True
+        self.game_engine = GameEngine()
+        self.computer = Computer()
+        self.human = Human()
         self.scores = []
+        self.counter = 0
 
-    def evaluate_win_state(self, board):
-        win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
-        for i in win_combos:
-            if board[i[0]] == player_num and board[i[1]] == player_num and board[i[2]] == player_num:
+    def is_moves_left(self, board): 
+        for i in board: 
+            if i == 0: 
                 return True
             else: 
                 return False
 
-    def get_open_positions(self, game_state):
-        copy_board = board[:]
-        open_positions = []
-        i = 0
-        while i < len(board):
-            for digit in game_state:
-                if board[i] == 0:
-                    open_positions.append(i + 1)
-                if board[i] != 0:
-                    open_positions.append("")
-                i += 1
-        return open_positions
+    def get_available_moves(self, board): 
+        available_moves = [index for index, value in enumerate(board) if value == 0]
+        return available_moves
 
-    def payoff(self): 
-        win = self.evaluate_win_state(game_state)
-        if win == True: 
-            score = math.inf - depth
-            self.scores.append(score)
-        elif win == False: 
-            score = -math.inf - depth
-            self.scores.append(score)
+    def x_win(self, board):
+        for i in self.win_combos:
+            if board[i[0]] == 1 and board[i[1]] == 1 and board[i[2]] == 1:
+                print("x_win")
+                self.game_running = False
+                return True
+
+    def o_win(self, board):
+        for i in self.win_combos:
+            if board[i[0]] == 2 and board[i[1]] == 2 and board[i[2]] == 2:
+                print("o_win")
+                self.game_running = False
+                return True
+
+    def score_board(self, board): 
+        if self.x_win(board) == True: 
+            self.scores.append(10)
+        elif self.o_win(board) == True: 
+            self.scores.append(-10)
+        elif self.game_running == False and self.check_for_win == False: 
+            self.scores.append(0)
+
+        return self.scores
+
+    def minimax(self, board, depth, is_max_player):
+        empty_positions = self.get_available_moves(board)
+
+        if self.game_running == False or depth == 9: 
+            return  
+        
+        if is_max_player == True: 
+
+            best_score = -10 
+            self.game_engine.take_turn(self.computer)
+           # for i in board: 
+           #     if len(empty_positions) > 0 and i == 0: 
+           #         print(board[i], "i")
+           #         move = self.get_index(board)
+           #         print(move, "move")
+           #         board[i] = move
+           #         print(empty_positions[0])
+            score = self.minimax(board, depth + 1, False)
+            best_score = max(best_score, score)
+            print(board)
+            print(best_score, "max best score")
+            return best_score
+
         else: 
-            score = 0
-            self.scores.append(score)
 
-    def minimax(self, game_state, depth, maximizing_player):
-        if depth == 0 or self.evaluate_win_state(game_state) == True: 
-            return self.payoff() 
+            best_score = 10
+            self.game_engine.take_turn(self.computer)
+           # for i in board: 
+           #     score = self.minimax(board, depth + 1, True)
+           #     best_score = min(best_score, score)
 
-        if maximizing_player: 
-            best_value = -math.inf
-            for move in game_state: 
-                value = self.minimax(game_state, depth - 1, True)
-                best_value = max(best_value, value)
-            return best_value
-
-        else:
-            best_value = math.inf
-            for move in game_state: 
-                value = self.minimax(game_state, depth - 1, False)
-                best_value = min(best_value, value)
-            return best_value
-
-    def run_minimax(self): 
-        pass
-
-if __name__ == "__main__":
+            print(board)
+            print(best_score, "min best score")
+            return best_score
+            
+if __name__ == "__main__": 
     a = Minimax()
-    game_state = [0, 1, 2, 2, 2, 0, 0, 1, 1]
-    depth = 4 
-    maximizing_player = True
-    a.minimax(game_state, depth, maximizing_player)
+    board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    is_max_player = True
+    depth = 0
+    a.score_board(board)
+    a.get_available_moves(board)
+    a.minimax(board, depth, is_max_player)
 

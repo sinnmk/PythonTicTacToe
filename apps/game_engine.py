@@ -2,7 +2,6 @@ from user_interface import UserInterface
 from player import Player
 from human import Human
 from computer import Computer
-from minimax import Minimax
 import time
 
 
@@ -10,7 +9,6 @@ class GameEngine(object):
 
     def __init__(self):
         self.user_interface = UserInterface()
-        self.minimax = Minimax()
         self.computer_player = Computer()
         self.human_player = Human()
         self.menu_choice_msg = ("\nTIC TAC TOE MENU \n1. Player vs Computer \n2. Player vs Player \n3. Computer vs Computer \n4. Display Rules \n5. Quit")
@@ -26,6 +24,8 @@ class GameEngine(object):
         self.turns = 0
         self.x_moves = 0
         self.o_moves = 0
+        self.depth = 0
+        self.max_depth = 9
 
     def exit_game(self):
         return exit()

@@ -6,7 +6,9 @@ class Computer(Player):
     def __init__(self):
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
-
+        self.scores = []
+        self.depth = 0
+        self.max_depth = 9 
 
     def get_possible_win_combos(self, board):
         winning_moves = []
@@ -69,4 +71,8 @@ class Computer(Player):
         name = "Computer"
         return name
 
-
+if __name__ == "__main__": 
+    a = Computer()
+    board = [1, 1, 2, 1, 2, 0, 0, 2, 0]
+    a.get_open_positions(board)
+    a.get_move(board)
