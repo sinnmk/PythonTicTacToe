@@ -24,8 +24,7 @@ class GameEngine(object):
         self.turns = 0
         self.x_moves = 0
         self.o_moves = 0
-        self.depth = 0
-        self.max_depth = 9
+        self.scores = []
 
     def exit_game(self):
         return exit()
@@ -74,40 +73,19 @@ class GameEngine(object):
             self.game_running = True
 
     def out_of_turns(self):
+        if self.turns == 9: 
+            self.game_running == False 
         return self.turns == 9
-
-    def all_moves(self): 
-        board = self.placeholder_board
-        x_moves = [marker for marker in board if marker == 1]
-        o_moves = [marker for marker in board if marker == 2]
-        return x_moves, o_moves
-
-    def set_player_marker(self, x_moves, o_moves):
-        if len(x_moves) == 0 and len(o_moves) == 0:
-            player_marker = 1
-            return player_marker
-
-        elif len(x_moves) > len(o_moves):
-            player_marker = 2
-            return player_marker
-
-        elif len(o_moves) >= len(x_moves):
-            player_marker = 1
-            return player_marker
 
     def take_turn(self, player): 
         board = self.placeholder_board
         index = player.find_index_of_move(board)
-        x_moves, o_moves = self.all_moves()
-        player_marker = self.set_player_marker(x_moves, o_moves)
+        x_moves, o_moves = player.all_moves(board)
+        player_marker = player.set_player_marker(x_moves, o_moves) 
         player.make_move(index, board, player_marker)
 
     def pause(self): 
         return time.sleep(1)
-
-    def save_game_state(self, board): 
-        game_state = board[:]
-        return game_state 
 
     def run_game(self, player):
         board = self.placeholder_board

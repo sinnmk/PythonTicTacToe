@@ -32,3 +32,22 @@ class Player(object):
 
     def display_players_name(self):
         print (self.set_name() + "'s" + " turn...")
+
+    def all_moves(self, board): 
+        x_moves = [marker for marker in board if marker == 1]
+        o_moves = [marker for marker in board if marker == 2]
+        return x_moves, o_moves
+
+    def set_player_marker(self, x_moves, o_moves): 
+        if len(x_moves) == 0 and len(o_moves) == 0:
+            player_marker = 1
+            return player_marker
+
+        elif len(x_moves) > len(o_moves):
+            player_marker = 2
+            return player_marker
+
+        elif len(o_moves) >= len(x_moves):
+            player_marker = 1
+            return player_marker
+

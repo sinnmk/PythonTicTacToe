@@ -1,8 +1,3 @@
-import math
-from game_engine import GameEngine
-from computer import Computer
-from human import Human
-
 class Minimax(object):
 
     def __init__(self): 
@@ -39,16 +34,6 @@ class Minimax(object):
                 self.game_running = False
                 return True
 
-    def score_board(self, board): 
-        if self.x_win(board) == True: 
-            self.scores.append(10)
-        elif self.o_win(board) == True: 
-            self.scores.append(-10)
-        elif self.game_running == False and self.check_for_win == False: 
-            self.scores.append(0)
-
-        return self.scores
-
     def minimax(self, board, depth, is_max_player):
         empty_positions = self.get_available_moves(board)
 
@@ -67,6 +52,7 @@ class Minimax(object):
            #         board[i] = move
            #         print(empty_positions[0])
             score = self.minimax(board, depth + 1, False)
+            print(score, "max score")
             best_score = max(best_score, score)
             print(board)
             print(best_score, "max best score")
