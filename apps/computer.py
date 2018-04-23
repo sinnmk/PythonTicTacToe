@@ -1,5 +1,4 @@
 from player import Player
-import copy
 import random
 
 class Computer(Player):
@@ -94,22 +93,13 @@ class Computer(Player):
                     return False
                 i += 1
 
-    def change_player(self, player_marker): 
-        if player_marker == 1: 
-            return player_marker == 2
-        if player_marker == 2: 
-            return player_marker == 1
-
     def minimax(self, node, depth, player_marker):
         if self.board_is_terminal == True: 
             if self.x_win(board) == True: 
-                print("-50")
                 return -50
             elif self.o_win(board) == True: 
-                print("50")
                 return 50 
             else: 
-                print("0")
                 return 0
 
         if player_marker == 2: 
@@ -118,16 +108,11 @@ class Computer(Player):
 
             for move in available_moves: 
                 index = super(Computer, self).find_index_of_move(board)
-                print("index", index)
                 x_moves, o_moves = super(Computer, self).all_moves(board)
                 player_marker = super(Computer, self).set_player_marker(x_moves, o_moves)
                 move_val = self.minimax(board, depth - 1, player_marker)
-                move_val = 50
-                print("move value", move_val)
                 self.make_move(index, board, player_marker)
                 best_val = max(best_val, move_val)
-            print("best_value", best_val)
-            print(board, "board")
             return best_val
 
         if player_marker == 1: 
@@ -136,49 +121,36 @@ class Computer(Player):
 
             for move in available_moves: 
                 index = super(Computer, self).find_index_of_move(board)
-                print("index", index)
                 x_moves, o_moves = super(Computer, self).all_moves(board)
                 player_marker = super(Computer, self).set_player_marker(x_moves, o_moves)
-                print(player_marker, "player marker")
                 move_val = self.minimax(board, depth - 1, player_marker)
-                move_val = -50
-                print("move value", move_val)
                 self.make_move(index, board, player_marker)
                 best_val = min(best_val, move_val)
-            print("best value", best_val)
-            print(board, "board")
             return best_val
 
     def take_best_move(self, board, depth, player_marker): 
         available_moves = self.get_available_moves(board)
-        neutral_val = 0 
+        draw_val = 0 
         choices = []
 
         for move in available_moves: 
-            print("hey begin")
             index = super(Computer, self).find_index_of_move(board)
             x_moves, o_moves = super(Computer, self).all_moves(board)
             player_marker = super(Computer, self).set_player_marker(x_moves, o_moves)
             self.make_move(index, board, player_marker)
             move_val = self.minimax(board, depth - 1, player_marker)
-            print("hey")
 
-            if move_val > neutral_val: 
+            if move_val > draw_val: 
                 choices = [move]
-            elif move_val == neutral_val: 
+            elif move_val == draw_val: 
                 choices.append(move)
-        print("choices: ", choices)
 
         if len(choices) > 0: 
-            print("hi")
             move = random.choice(choices)
-            print("best move", move)
             return move
 
         else: 
-            print("hello")
             move = random.choice(available_moves)
-            print("random move", move)
             return move
 
 
