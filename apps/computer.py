@@ -159,7 +159,6 @@ if __name__ == "__main__":
     board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     depth = 9
     player_marker = 1
-    index = 1
     a.minimax(board, depth, player_marker)
     a.take_best_move(board, depth, player_marker)
 
