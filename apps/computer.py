@@ -8,6 +8,7 @@ class Computer(Player):
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
         self.scores = []
+        self.moves = []
         self.depth = 0
         self.max_depth = 9 
 
@@ -39,7 +40,8 @@ class Computer(Player):
                 blocking_moves.append(move)
         return blocking_moves
 
-    def get_open_positions(self, board):
+
+    def get_available_moves(self, board): 
         copy_board = board[:]
         open_positions = []
         i = 0
@@ -50,28 +52,19 @@ class Computer(Player):
                 if board[i] != 0:
                     open_positions.append("")
                 i += 1
-        return open_positions
+        moves = open_positions
+        available_moves = [x for x in moves if isinstance(x, int)]
+        print(available_moves)
+        return available_moves
 
-    def get_move(self, board):
-        winning_moves = self.get_possible_win_combos(board)
-        blocking_moves = self.get_possible_lose_combos(board)
-        open_positions = self.get_open_positions(board)
-        if len(winning_moves) > 0:
-            move = random.choice(winning_moves)
-            return move
-        if len(blocking_moves) > 0:
-            move = random.choice(blocking_moves)
-            return move
-        move = random.choice(self.num_board)
-        if move in open_positions:
-            return move
-        else:
-            return self.get_move(board)
+    def get_move(self, board): 
+        available_moves = self.get_available_moves(board)
+        move = random.choice(available_moves)
+        return move 
 
     def set_name(self):
         name = "Computer"
         return name
-
 
     def x_win(self, board):
         for i in self.win_combos:
@@ -101,68 +94,100 @@ class Computer(Player):
                     return False
                 i += 1
 
-    def score_board(self, board): 
-        if self.x_win(board) == True: 
-            self.scores.append(10)
-            print('x')
-        elif self.o_win(board) == True: 
-            self.scores.append(-10)
-            print('o')
-        elif self.board_is_terminal(board) == True and self.x_win(board) == False and self.o_win(board) == False: 
-            self.scores.append(0)
-        print(self.scores, "score")
-        return self.scores
+    def change_player(self, player_marker): 
+        if player_marker == 1: 
+            return player_marker == 2
+        if player_marker == 2: 
+            return player_marker == 1
 
-    def get_available_moves(self, board): 
-        moves = self.get_open_positions(board) 
-        available_moves = [x for x in moves if isinstance(x, int)]
-        return available_moves
+    def minimax(self, node, depth, player_marker):
+        if self.board_is_terminal == True: 
+            if self.x_win(board) == True: 
+                print("-50")
+                return -50
+            elif self.o_win(board) == True: 
+                print("50")
+                return 50 
+            else: 
+                print("0")
+                return 0
 
-    def get_index_of_available_moves(self, board): 
+        if player_marker == 2: 
+            best_val = -50
+            available_moves = self.get_available_moves(board)
+
+            for move in available_moves: 
+                index = super(Computer, self).find_index_of_move(board)
+                print("index", index)
+                x_moves, o_moves = super(Computer, self).all_moves(board)
+                player_marker = super(Computer, self).set_player_marker(x_moves, o_moves)
+                move_val = self.minimax(board, depth - 1, player_marker)
+                move_val = 50
+                print("move value", move_val)
+                self.make_move(index, board, player_marker)
+                best_val = max(best_val, move_val)
+            print("best_value", best_val)
+            print(board, "board")
+            return best_val
+
+        if player_marker == 1: 
+            best_val = 50 
+            available_moves = self.get_available_moves(board)
+
+            for move in available_moves: 
+                index = super(Computer, self).find_index_of_move(board)
+                print("index", index)
+                x_moves, o_moves = super(Computer, self).all_moves(board)
+                player_marker = super(Computer, self).set_player_marker(x_moves, o_moves)
+                print(player_marker, "player marker")
+                move_val = self.minimax(board, depth - 1, player_marker)
+                move_val = -50
+                print("move value", move_val)
+                self.make_move(index, board, player_marker)
+                best_val = min(best_val, move_val)
+            print("best value", best_val)
+            print(board, "board")
+            return best_val
+
+    def take_best_move(self, board, depth, player_marker): 
         available_moves = self.get_available_moves(board)
-        index_of_moves = []
-        for i in available_moves: 
-            index_of_moves.append(i -1)
-        return index_of_moves
+        neutral_val = 0 
+        choices = []
 
-    def minimax(self, board, depth, is_max_player):
-        new_board = board[:]
+        for move in available_moves: 
+            print("hey begin")
+            index = super(Computer, self).find_index_of_move(board)
+            x_moves, o_moves = super(Computer, self).all_moves(board)
+            player_marker = super(Computer, self).set_player_marker(x_moves, o_moves)
+            self.make_move(index, board, player_marker)
+            move_val = self.minimax(board, depth - 1, player_marker)
+            print("hey")
 
-        if self.board_is_terminal(new_board) == True: 
-            print(self.score_board(new_board))
-            return self.score_board(new_board) 
+            if move_val > neutral_val: 
+                choices = [move]
+            elif move_val == neutral_val: 
+                choices.append(move)
+        print("choices: ", choices)
+
+        if len(choices) > 0: 
+            print("hi")
+            move = random.choice(choices)
+            print("best move", move)
+            return move
 
         else: 
-            if is_max_player == True: 
-                state_score = [-10] 
-            else: 
-                state_score = [10]
-            index = super(Computer, self).find_index_of_move(new_board)
-            x_moves, o_moves = super(Computer, self).all_moves(new_board)
-            player_marker = super(Computer, self).set_player_marker(x_moves, o_moves) 
-            available_moves = self.get_available_moves(board)
-            super(Computer, self).make_move(index, new_board, player_marker)
-            next_score = self.scores
-            print(self.scores, "self scores")
-            print(new_board, "new_board")
-            next_score = self.minimax(new_board, depth, is_max_player) 
-            if next_score < state_score: 
-                next_score = state_score
-                print(next_score, "next score")
-            elif next_score > state_score: 
-                next_score = state_score
-                print(next_score, "next score")
-            print(next_score, "last")
-            return next_score
+            print("hello")
+            move = random.choice(available_moves)
+            print("random move", move)
+            return move
 
-    def take_master_move(self): 
-        master_move_list = [index for index in enumerate(self.scores)]            
-        print(master_move_list)
 
 if __name__ == "__main__": 
     a = Computer()
-    board = [1, 1, 0, 0, 2, 0, 2, 1, 2]
-    depth = 0
-    is_max_player = True
-    a.minimax(board, depth, is_max_player)
+    board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    depth = 9
+    player_marker = 1
+    index = 1
+    a.minimax(board, depth, player_marker)
+    a.take_best_move(board, depth, player_marker)
 

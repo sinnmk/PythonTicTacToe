@@ -20,6 +20,7 @@ class Player(object):
         move = self.get_move(board)
         move_index = [move - 1 for num in self.num_board if num == move]
         index = move_index[0]
+        print(index, "index")
         return index
 
     def make_move(self, index, board, player_marker):
