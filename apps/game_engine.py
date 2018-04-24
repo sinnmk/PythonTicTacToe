@@ -2,6 +2,7 @@ from user_interface import UserInterface
 from player import Player
 from human import Human
 from computer import Computer
+import os
 import time
 
 
@@ -64,11 +65,11 @@ class GameEngine(object):
         if self.x_win(board) == True:
             print(self.x_win_msg)
             self.game_running = False
-            exit()
+            self.play_again()
         if self.o_win(board) == True:
             print(self.o_win_msg)
             self.game_running = False
-            exit()
+            self.play_again()
         else:
             self.game_running = True
 
@@ -87,22 +88,20 @@ class GameEngine(object):
     def pause(self): 
         return time.sleep(1)
 
+    def clear_screen(self): 
+        return os.system('clear')
+
     def run_game(self, player):
-        board = self.placeholder_board
-        self.take_turn(player)
-        self.turns += 1
-        self.display_board(board)
-        self.check_for_win(board)
-        self.pause()
         if self.out_of_turns():
            print(self.catgame_msg)
-           self.exit_game()
-        else:
-           self.take_turn(player)
-           self.turns += 1
-           self.display_board(board)
-           self.check_for_win(board)
-           self.pause()
+           self.play_again()
+        else: 
+            board = self.placeholder_board
+            self.take_turn(player)
+            self.turns += 1
+            self.display_board(board)
+            self.check_for_win(board)
+            self.pause()
 
     def player_vs_computer(self):
         board = self.placeholder_board
@@ -110,8 +109,10 @@ class GameEngine(object):
         while self.game_running:
             if turn_choice == 2:
                 self.run_game(self.computer_player)
+                self.run_game(self.human_player)
             if turn_choice == 1:
                 self.run_game(self.human_player)
+                self.run_game(self.computer_player)
 
     def player_vs_player(self):
         board = self.placeholder_board
@@ -122,6 +123,7 @@ class GameEngine(object):
         board = self.placeholder_board
         while self.game_running:
             self.run_game(self.computer_player)
+            self.clear_screen()
 
     def display_rules(self):
         self.user_interface.display_rules()
@@ -138,6 +140,13 @@ class GameEngine(object):
               print(self.invalid_entry_msg)
            else:
               return menu_choices[menu_choice]()
+
+    def play_again(self): 
+        answer = input("Y or N: ").upper()
+        if answer == "Y": 
+            self.choose_menu_choice()
+        else: 
+            exit()
 
 if __name__ == "__main__":
     a = GameEngine()

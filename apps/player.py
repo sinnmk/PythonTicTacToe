@@ -18,9 +18,7 @@ class Player(object):
 
     def find_index_of_move(self, board):
         move = self.get_move(board)
-        move_index = [move - 1 for num in self.num_board if num == move]
-        index = move_index[0]
-        print(index, "index")
+        index = move - 1
         return index
 
     def make_move(self, index, board, player_marker):
@@ -28,8 +26,10 @@ class Player(object):
         o = 2
         if player_marker == x:
             board[index] = 1
+            return board
         if player_marker == o:
             board[index] = 2
+            return board
 
     def display_players_name(self):
         print (self.set_name() + "'s" + " turn...")
