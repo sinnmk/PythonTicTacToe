@@ -26,10 +26,8 @@ class Player(object):
         o = 2
         if player_marker == x:
             board[index] = 1
-            return board
         if player_marker == o:
             board[index] = 2
-            return board
 
     def display_players_name(self):
         print (self.set_name() + "'s" + " turn...")

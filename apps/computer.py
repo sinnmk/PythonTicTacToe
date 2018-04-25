@@ -11,6 +11,18 @@ class Computer(Player):
         self.depth = 0
         self.max_depth = 9 
 
+    def get_open_positions(self, board): 
+        open_positions = []
+        for i in range(0, len(board)): 
+            if board[i] == 0: 
+                open_positions.append(i + 1)
+        return open_positions
+
+    def get_novice_move(self, board): 
+        open_positions = self.get_open_positions(board)
+        move = random.choice(open_positions)
+        return move
+
     def get_possible_win_combos(self, board):
         winning_moves = []
         for i in self.win_combos:
@@ -39,14 +51,6 @@ class Computer(Player):
                 blocking_moves.append(move)
         return blocking_moves
 
-
-    def get_open_positions(self, board): 
-        open_positions = []
-        for i in range(0, len(board)): 
-            if board[i] == 0: 
-                open_positions.append(i + 1)
-        return open_positions
-
     def get_move(self, board): 
         winning_moves = self.get_possible_win_combos(board)
         blocking_moves = self.get_possible_lose_combos(board)
@@ -62,11 +66,20 @@ class Computer(Player):
             return move
         else: 
             return self.get_move(board)
-    
-   # def get_move(self, board): 
-   #     available_moves = self.get_open_positions(board)
-   #     for i in available_moves: 
-   #         return i
+
+    def intermediate_ai(self, board): 
+       self.get_possible_win_combos(board)
+       self.get_possible_lose_combos(board)
+       self.get_intermediate_move(board)
+
+    def get_unbeatable_move(self, board): 
+        available_moves = self.get_open_positions(board)
+        for i in available_moves: 
+            return i
+
+    def unbeatable_ai(self): 
+       pass
+
 
     def set_name(self):
         name = "Computer"
@@ -118,8 +131,7 @@ class Computer(Player):
                 x_moves, o_moves = super(Computer, self).all_moves(board)
                 player_marker = super(Computer, self).set_player_marker(x_moves, o_moves)
                 super(Computer, self).make_move(index, board, player_marker)
-                #move_val = self.minimax(board, depth - 1, player_marker)
-                move_val = 1
+                move_val = self.minimax(board, depth - 1, player_marker)
                 best_val = max(best_val, move_val)
             print(best_val, "best val for o")
             return best_val
@@ -133,8 +145,7 @@ class Computer(Player):
                 x_moves, o_moves = super(Computer, self).all_moves(board)
                 player_marker = super(Computer, self).set_player_marker(x_moves, o_moves)
                 super(Computer, self).make_move(index, board, player_marker)
-                move_val = 1
-                #move_val = self.minimax(board, depth - 1, player_marker)
+                move_val = self.minimax(board, depth - 1, player_marker)
                 best_val = min(best_val, move_val)
             print(best_val, "best val for x")
             return best_val
@@ -150,8 +161,7 @@ class Computer(Player):
             x_moves, o_moves = super(Computer, self).all_moves(board)
             player_marker = super(Computer, self).set_player_marker(x_moves, o_moves)
             super(Computer, self).make_move(index, board, player_marker)
-            move_val = 1
-            #move_val = self.minimax(board, depth - 1, player_marker)
+            move_val = self.minimax(board, depth - 1, player_marker)
 
             if move_val > draw_val: 
                 choices = [move]
@@ -171,12 +181,9 @@ class Computer(Player):
             print(rand_move, "random move")
             return rand_move
 
-
 if __name__ == "__main__": 
     a = Computer()
     board = [0, 2, 0, 0, 1, 0, 0, 2, 1]
     depth = 9
     player_marker = 1
-    a.minimax(board, depth, player_marker)
-    a.take_best_move(board, depth, player_marker)
 
