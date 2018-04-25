@@ -31,6 +31,10 @@ class GameEngine(object):
     def exit_game(self):
         return exit()
 
+    def clear_board(self): 
+        self.game_board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        return self.game_board
+
     def terminate_game(self): 
         self.game_running = False 
 
@@ -69,17 +73,17 @@ class GameEngine(object):
         if self.x_win(board) == True:
             print(self.x_win_msg)
             self.terminate_game()
+            self.clear_board()
             self.play_again()
         if self.o_win(board) == True:
             print(self.o_win_msg)
             self.terminate_game()
+            self.clear_board()
             self.play_again()
         else:
             self.game_running = True
 
     def out_of_turns(self):
-        if self.turns == 9: 
-            self.game_running == False 
         return self.turns == 9
 
     def take_turn(self, player): 
@@ -100,6 +104,8 @@ class GameEngine(object):
         if self.out_of_turns():
            print(self.catgame_msg)
            self.play_again()
+           self.clear_board()
+           exit()
         else: 
             self.take_turn(player)
             self.turns += 1
@@ -127,7 +133,6 @@ class GameEngine(object):
         board = self.game_board
         while self.game_running:
             self.run_game(self.computer_player)
-            self.clear_screen()
 
     def display_rules(self):
         self.user_interface.display_rules()

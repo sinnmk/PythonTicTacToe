@@ -18,7 +18,8 @@ class Player(object):
 
     def find_index_of_move(self, board):
         move = self.get_move(board)
-        index = move - 1
+        move_index = [move - 1 for num in self.num_board if num == move]
+        index = move_index[0]
         return index
 
     def make_move(self, index, board, player_marker):
@@ -49,4 +50,6 @@ class Player(object):
         elif len(o_moves) >= len(x_moves):
             player_marker = 1
             return player_marker
+
+
 
