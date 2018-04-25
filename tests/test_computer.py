@@ -15,6 +15,11 @@ class TestComputer(unittest.TestCase):
         move = self.computer.get_move(board) 
         self.assertEqual(move, 5)
 
+    def test_board_is_terminal(self): 
+        board = [1, 1, 1, 0, 0, 2, 0, 2, 0]
+        board_is_terminal = self.computer.board_is_terminal(board)
+        self.assertEqual(board_is_terminal, True)
+
     def test_computer_can_get_possible_1_2_3_horizontal_win(self): 
         board = [1, 1, 0, 0, 0, 0, 0, 0, 0]
         possible_win_combo = self.computer.get_possible_win_combos(board)
@@ -98,7 +103,7 @@ class TestComputer(unittest.TestCase):
     def test_can_get_open_positions(self): 
         board = [1, 2, 1, 2, 0, 0, 1, 2, 0]
         open_positions = self.computer.get_open_positions(board)
-        self.assertEqual(open_positions, ['', '', '', '', 5, 6, '', '', 9])
+        self.assertEqual(open_positions, [5, 6, 9])
 
     def test_can_set_name(self): 
         name = self.computer.set_name()
