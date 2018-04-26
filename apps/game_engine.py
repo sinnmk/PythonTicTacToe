@@ -92,7 +92,7 @@ class GameEngine(object):
         x_moves, o_moves = player.all_moves(board)
         player_marker = player.set_player_marker(x_moves, o_moves) 
         player.make_move(index, board, player_marker)
-
+        
     def pause(self): 
         return time.sleep(1)
 

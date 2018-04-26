@@ -50,21 +50,26 @@ class Computer(Player):
                 blocking_moves.append(move)
         return blocking_moves
 
+   # def get_move(self, board): 
+   #     winning_moves = self.get_possible_win_combos(board)
+   #     blocking_moves = self.get_possible_lose_combos(board)
+   #     open_positions = self.get_open_positions(board)
+   #     if len(winning_moves) > 0: 
+   #         move = random.choice(winning_moves)
+   #         return move
+   #     if len(blocking_moves) > 0: 
+   #         move = random.choice(blocking_moves)
+   #         return move
+   #     move = random.choice(self.num_board)
+   #     if move in open_positions: 
+   #         return move
+   #     else: 
+   #         return self.get_move(board)
+   
     def get_move(self, board): 
-        winning_moves = self.get_possible_win_combos(board)
-        blocking_moves = self.get_possible_lose_combos(board)
         open_positions = self.get_open_positions(board)
-        if len(winning_moves) > 0: 
-            move = random.choice(winning_moves)
-            return move
-        if len(blocking_moves) > 0: 
-            move = random.choice(blocking_moves)
-            return move
-        move = random.choice(self.num_board)
-        if move in open_positions: 
-            return move
-        else: 
-            return self.get_move(board)
+        for i in open_positions: 
+          return i
 
     def x_win(self, board):
         for i in self.win_combos:
@@ -121,33 +126,36 @@ class Computer(Player):
             else: 
                 return 0
 
+        '''maximizing player'''
         if player_marker == 1: 
-           best_score = 100
-           open_pos = self.get_open_positions(new_board)
-           for position in open_pos: 
-               self.move(new_board)
-               move_score = self.minimax(new_board, depth - 1, player_marker)
-               best_score = max(best_score, move_score) - depth
-           print(best_score, "x best score")
-           self.x_scores.append(best_score)
-           print(self.x_scores, "x scores")
-           return best_score
-
-        if player_marker == 2: 
            best_score = -100
            open_pos = self.get_open_positions(new_board)
            for position in open_pos: 
                self.move(new_board)
                move_score = self.minimax(new_board, depth - 1, player_marker)
-               best_score = min(best_score, move_score)
-           print(best_score, "o best score")
-           self.o_scores.append(best_score)
-           print(self.o_scores, "o scores")
-           return best_score
+               best_score = max(best_score, move_score) - depth
+               print(position, "position")
+               print(best_score, "score")
+               self.x_scores.append(best_score)
+               print("x all scores: ", self.x_scores)
+               print("x_best_score: ", best_score)
+               return best_score
+
+        '''minimizing player'''
+        if player_marker == 2: 
+           best_score = 100
+           open_pos = self.get_open_positions(new_board)
+           for position in open_pos: 
+               self.move(new_board)
+               move_score = self.minimax(new_board, depth - 1, player_marker)
+               best_score = min(best_score, move_score) - depth
+               self.o_scores.append(best_score)
+               return best_score
 
     def best_move(self, new_board): 
         choices = []
         open_positions = self.get_open_positions(new_board)
+        print("open pos: ", open_positions)
         for position in open_positions: 
             move_score = self.minimax(new_board, depth - 1, player_marker)
             self.move(new_board)
@@ -156,19 +164,18 @@ class Computer(Player):
             elif move_score == 0: 
                choices.append(position)
 
-        if len(choices) > 0: 
-           position = random.choice(choices)
-           print(choices, "choices")
-           print(position, "best position")
-           return position 
-        else: 
-           position = random.choice(open_positions)
-           print(position, "random position")
-           return position 
+            print(choices, "best choices")
+            print(new_board)
+            if len(choices) > 0: 
+               position = random.choice(choices)
+               return position 
+            else: 
+               position = random.choice(open_positions)
+               return position 
         
 if __name__ == "__main__":
     a = Computer()
-    board = [2, 2, 1, 0, 1, 0, 2, 0, 1]
+    board = [0, 2, 0, 1, 0, 1, 0, 2, 0]
     new_board = board[:]
     depth = a.find_depth(board)
     player_marker = 1
