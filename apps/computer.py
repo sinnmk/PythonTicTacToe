@@ -6,8 +6,8 @@ class Computer(Player):
     def __init__(self):
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
-        self.scores = []
-        self.moves = []
+        self.x_scores = []
+        self.o_scores = []
         self.depth = 0
         self.max_depth = 9 
 
@@ -86,11 +86,11 @@ class Computer(Player):
             return True
         elif self.o_win(new_board) == True: 
             return True
-        elif all(board) != 0: 
+        elif all(new_board) != 0: 
             return True
         while i < len(new_board): 
-            for num in board: 
-                if board[i] == 0: 
+            for num in new_board: 
+                if new_board[i] == 0: 
                     return False
                 i += 1
 
@@ -115,13 +115,10 @@ class Computer(Player):
 
         if self.board_is_terminal(new_board) == True or depth == self.max_depth: 
             if self.x_win(new_board) == True: 
-                print(100)
                 return 100
             if self.o_win(new_board) == True: 
-                print(-100)
                 return -100
             else: 
-                print(0)
                 return 0
 
         if player_marker == 1: 
@@ -130,9 +127,10 @@ class Computer(Player):
            for position in open_pos: 
                self.move(new_board)
                move_score = self.minimax(new_board, depth - 1, player_marker)
-               print(depth, "depth")
                best_score = max(best_score, move_score) - depth
-           print(best_score, "player1")
+           print(best_score, "x best score")
+           self.x_scores.append(best_score)
+           print(self.x_scores, "x scores")
            return best_score
 
         if player_marker == 2: 
@@ -141,28 +139,26 @@ class Computer(Player):
            for position in open_pos: 
                self.move(new_board)
                move_score = self.minimax(new_board, depth - 1, player_marker)
-               print(depth, "depth")
                best_score = min(best_score, move_score)
-           print(best_score, "player2")
+           print(best_score, "o best score")
+           self.o_scores.append(best_score)
+           print(self.o_scores, "o scores")
            return best_score
 
     def best_move(self, new_board): 
         choices = []
         open_positions = self.get_open_positions(new_board)
         for position in open_positions: 
-            self.move(new_board)
             move_score = self.minimax(new_board, depth - 1, player_marker)
-
-        print(move_score, "move score in best move")
-
-        if move_score > 0: 
-           choices.append(position)
-        elif move_score == 0: 
-           choices.append(position)
-        print(choices, "choices")
+            self.move(new_board)
+            if move_score > 0: 
+               choices = [position]
+            elif move_score == 0: 
+               choices.append(position)
 
         if len(choices) > 0: 
            position = random.choice(choices)
+           print(choices, "choices")
            print(position, "best position")
            return position 
         else: 
@@ -172,7 +168,7 @@ class Computer(Player):
         
 if __name__ == "__main__":
     a = Computer()
-    board = [1, 2, 0, 0, 1, 0, 2, 1, 2]
+    board = [2, 2, 1, 0, 1, 0, 2, 0, 1]
     new_board = board[:]
     depth = a.find_depth(board)
     player_marker = 1
