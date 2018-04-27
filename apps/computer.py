@@ -8,8 +8,7 @@ class Computer(Player):
         self.win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
         self.x_scores = []
         self.o_scores = []
-        self.depth = 0
-        self.max_depth = 9 
+        self.max_depth = -9 
 
     def set_name(self):
         name = "Computer"
@@ -50,26 +49,28 @@ class Computer(Player):
                 blocking_moves.append(move)
         return blocking_moves
 
-   # def get_move(self, board): 
-   #     winning_moves = self.get_possible_win_combos(board)
-   #     blocking_moves = self.get_possible_lose_combos(board)
-   #     open_positions = self.get_open_positions(board)
-   #     if len(winning_moves) > 0: 
-   #         move = random.choice(winning_moves)
-   #         return move
-   #     if len(blocking_moves) > 0: 
-   #         move = random.choice(blocking_moves)
-   #         return move
-   #     move = random.choice(self.num_board)
-   #     if move in open_positions: 
-   #         return move
-   #     else: 
-   #         return self.get_move(board)
-   
     def get_move(self, board): 
+        winning_moves = self.get_possible_win_combos(board)
+        blocking_moves = self.get_possible_lose_combos(board)
         open_positions = self.get_open_positions(board)
-        for i in open_positions: 
-          return i
+        if len(winning_moves) > 0: 
+            move = random.choice(winning_moves)
+            return move
+        if len(blocking_moves) > 0: 
+            move = random.choice(blocking_moves)
+            return move
+        move = random.choice(self.num_board)
+        if move in open_positions: 
+            return move
+        else: 
+            return self.get_move(board)
+   
+   # def get_move(self, board): 
+   #     open_positions = self.get_open_positions(board)
+   #     tried_positions = []
+   #     for i in open_positions: 
+   #       tried_positions.append(i)
+   #       return i
 
     def x_win(self, board):
         for i in self.win_combos:
@@ -85,25 +86,18 @@ class Computer(Player):
             else: 
                 return False
 
-    def board_is_terminal(self, new_board):
+    def board_is_terminal(self, board):
         i = 0
-        if self.x_win(new_board) == True: 
+        if self.x_win(board) == True: 
             return True
-        elif self.o_win(new_board) == True: 
+        elif self.o_win(board) == True: 
             return True
-        elif all(new_board) != 0: 
-            return True
-        while i < len(new_board): 
-            for num in new_board: 
-                if new_board[i] == 0: 
-                    return False
-                i += 1
 
-    def move(self, new_board): 
-        index = super(Computer, self).find_index_of_move(new_board)
-        x_moves, o_moves = super(Computer, self).all_moves(new_board)
+    def move(self, board): 
+        index = super(Computer, self).find_index_of_move(board)
+        x_moves, o_moves = super(Computer, self).all_moves(board)
         player_marker = super(Computer, self).set_player_marker(x_moves, o_moves)
-        move = super(Computer, self).make_move(index, new_board, player_marker)
+        move = super(Computer, self).make_move(index, board, player_marker)
         return move
 
     def find_depth(self, board): 
@@ -117,6 +111,7 @@ class Computer(Player):
         choices = []
         x_moves, o_moves = super(Computer, self).all_moves(new_board)
         player_marker = super(Computer, self).set_player_marker(x_moves, o_moves)
+        open_positions = self.get_open_positions(new_board)
 
         if self.board_is_terminal(new_board) == True or depth == self.max_depth: 
             if self.x_win(new_board) == True: 
@@ -126,60 +121,49 @@ class Computer(Player):
             else: 
                 return 0
 
-        '''maximizing player'''
         if player_marker == 1: 
            best_score = -100
-           open_pos = self.get_open_positions(new_board)
-           for position in open_pos: 
+           for move in open_positions: 
                self.move(new_board)
                move_score = self.minimax(new_board, depth - 1, player_marker)
-               best_score = max(best_score, move_score) - depth
-               print(position, "position")
-               print(best_score, "score")
-               self.x_scores.append(best_score)
-               print("x all scores: ", self.x_scores)
-               print("x_best_score: ", best_score)
-               return best_score
+               best_score = max(best_score, move_score) 
+           return best_score
 
-        '''minimizing player'''
         if player_marker == 2: 
            best_score = 100
-           open_pos = self.get_open_positions(new_board)
-           for position in open_pos: 
+           for move in open_positions: 
                self.move(new_board)
                move_score = self.minimax(new_board, depth - 1, player_marker)
-               best_score = min(best_score, move_score) - depth
-               self.o_scores.append(best_score)
-               return best_score
+               best_score = min(best_score, move_score) 
+           return best_score
 
-    def best_move(self, new_board): 
+    def best_move(self, board, depth, player_marker): 
         choices = []
         open_positions = self.get_open_positions(new_board)
-        print("open pos: ", open_positions)
-        for position in open_positions: 
-            move_score = self.minimax(new_board, depth - 1, player_marker)
-            self.move(new_board)
+        
+        for move in open_positions: 
+            self.move(board)
+            move_score = self.minimax(board, depth - 1, player_marker)
             if move_score > 0: 
-               choices = [position]
+               choices = [move]
             elif move_score == 0: 
-               choices.append(position)
+               choices.append(move)
 
-            print(choices, "best choices")
-            print(new_board)
-            if len(choices) > 0: 
-               position = random.choice(choices)
-               return position 
-            else: 
-               position = random.choice(open_positions)
-               return position 
+        if len(choices) > 0: 
+           move = random.choice(choices)
+           print("MOVE CHOICE: ", move)
+           return move 
+        else: 
+           position = random.choice(open_positions)
+           return move 
         
 if __name__ == "__main__":
     a = Computer()
-    board = [0, 2, 0, 1, 0, 1, 0, 2, 0]
+    board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     new_board = board[:]
     depth = a.find_depth(board)
     player_marker = 1
-    a.best_move(new_board)
+    a.best_move(board, depth, player_marker)
 
 
     
