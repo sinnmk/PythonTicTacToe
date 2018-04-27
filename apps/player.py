@@ -23,11 +23,9 @@ class Player(object):
         return index
 
     def make_move(self, index, board, player_marker):
-        x = 1
-        o = 2
-        if player_marker == x:
+        if player_marker == 1:
             board[index] = 1
-        if player_marker == o:
+        if player_marker == 2:
             board[index] = 2
 
     def display_players_name(self):

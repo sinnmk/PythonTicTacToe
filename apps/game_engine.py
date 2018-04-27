@@ -75,7 +75,7 @@ class GameEngine(object):
             self.terminate_game()
             self.clear_board()
             self.play_again()
-        if self.o_win(board) == True:
+        elif self.o_win(board) == True:
             print(self.o_win_msg)
             self.terminate_game()
             self.clear_board()
