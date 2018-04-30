@@ -54,7 +54,7 @@ class Computer(object):
             return self.get_move(board)
 
     def make_move(self, board): 
-        pass
+       print("computer move")
    
     def get_open_positions(self, board): 
         open_positions = []

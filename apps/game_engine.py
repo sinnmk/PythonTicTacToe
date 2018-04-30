@@ -25,14 +25,8 @@ class GameEngine(object):
 
     def display_board(self, board):
         game_board_list = self.modify_game_board_list(board)
-        #put in ui and figure out how to input using string interpolation
-        print("""
-         {} | {} | {}
-        ---+---+---
-         {} | {} | {}
-        ---+---+---
-         {} | {} | {}
-        """.format(*game_board_list))
+        display_board = self.user_interface.display_game_board(game_board_list)
+        return display_board
 
     def get_available_moves(self, board): 
         available_moves = []
@@ -59,11 +53,6 @@ class GameEngine(object):
             turn_player = Human(marker = 1)
             return turn_player
 
-    def take_turn(self, board, turn_player): 
-        player = turn_player
-        move = player.make_move(board)
-        return move
-        
     def run_game(self, player_one, player_two):
         game_running = True
         board = self.create_board()
@@ -75,9 +64,10 @@ class GameEngine(object):
                 self.play_again()
                 break
             else: 
-                self.take_turn(board, turn_player)
+                turn_player.make_move(board)
                 self.display_board(board)
                 self.switch_player(turn_player)
+                #ended work here, need to figure out how to switch players correctly and make move correctly
 
     def game_set_up(self): 
         game_mode = self.get_game_type()
@@ -119,10 +109,8 @@ class GameEngine(object):
         else: 
             exit()
 
-
 if __name__ == "__main__":
     a = GameEngine()
-    player_one = Computer(marker = 1)
-    player_two = Computer(marker = 2)
-    a.run_game(player_one, player_two)
+    board = [1, 1, 2, 2, 1, 1, 2, 2, 1]
+    a.display_board(board)
 

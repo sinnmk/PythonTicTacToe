@@ -13,7 +13,7 @@ class Human(object):
         return move
 
     def make_move(self, board):
-        pass
+        print("human move")
 
     def set_name(self):
         name = self.user_interface.input_name()

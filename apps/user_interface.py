@@ -54,6 +54,16 @@ class UserInterface(object):
             else: 
                 return choice
 
+    def display_game_board(self, game_board_list): 
+        print("""
+         {} | {} | {}
+        ---+---+---
+         {} | {} | {}
+        ---+---+---
+         {} | {} | {}
+        """.format(*game_board_list))
+
+
     def display_example_board(self): 
         example_board = ("""
         1 | 2 | 3 
