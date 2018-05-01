@@ -41,19 +41,23 @@ class GameEngine(object):
         if len(available_moves) == 0: 
             return True
         else: 
+            #fix this if needed
             for i in win_combos:
                 if board[i[0]] == 1 and board[i[1]] == 1 and board[i[2]] == 1:
                     return True
 
-    def switch_player(self, turn_player): 
-        if turn_player == Human(marker = 1): 
-            turn_player = Computer(marker = 2)
+    def switch_player(self, turn_player, player_one, player_two ): 
+        if turn_player == player_one:  
+            turn_player = player_two 
+            print("turn player 1")
             return turn_player
-        else: 
-            turn_player = Human(marker = 1)
+        if turn_player == player_two:
+            turn_player = player_one 
+            print("turn player 2")
             return turn_player
 
     def run_game(self, player_one, player_two):
+        i = 0
         game_running = True
         board = self.create_board()
         turn_player = player_one
@@ -62,18 +66,15 @@ class GameEngine(object):
                 self.user_interface.display_game_over_msg()
                 self.user_interface.display_play_again_msg()
                 self.play_again()
-                break
+                quit()
             else: 
                 turn_player.make_move(board)
-                self.display_board(board)
-                self.switch_player(turn_player)
-                #ended work here, need to figure out how to switch players correctly and make move correctly
+                turn_player = self.switch_player(turn_player, player_one, player_two) 
 
-    def game_set_up(self): 
-        game_mode = self.get_game_type()
-
+    def game_setup(self): 
+        game_mode = self.user_interface.input_menu_choice()
         if game_mode == 1: 
-            turn_choice = self.set_turn()
+            turn_choice = self.user_interface.input_turn_choice()
             if turn_choice == 1: 
                 player_one = Human(marker = 1) 
                 player_two = Computer(marker = 2)
@@ -93,14 +94,6 @@ class GameEngine(object):
             player_two = Computer(marker = 2)
             self.run_game(player_one, player_two)
 
-    def get_game_type(self): 
-        game_mode = self.user_interface.input_menu_choice()
-        return game_mode
-
-    def set_turn(self): 
-        turn_choice = self.user_interface.input_turn_choice()
-        return turn_choice  
-
     def play_again(self): 
         print(self.play_again_msg)
         answer = input("Y or N: ").upper()
@@ -111,6 +104,8 @@ class GameEngine(object):
 
 if __name__ == "__main__":
     a = GameEngine()
-    board = [1, 1, 2, 2, 1, 1, 2, 2, 1]
-    a.display_board(board)
+    a.game_setup() 
+    player_one = Computer(marker = 1)
+    player_two = Human(marker = 2)
+    a.run_game(player_one, player_two)
 
