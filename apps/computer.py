@@ -55,6 +55,10 @@ class Computer(object):
 
     def make_move(self, board): 
        print("computer move")
+       available_moves = self.get_open_positions(board)
+       move = random.choice(available_moves)
+       board[move-1] = self.marker 
+       print(move)
    
     def get_open_positions(self, board): 
         open_positions = []
@@ -62,6 +66,13 @@ class Computer(object):
             if board[i] == 0: 
                 open_positions.append(i + 1)
         return open_positions
+
+if __name__ == "__main__":
+   a = Computer(marker = 1)
+   board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+   turn_player = 1
+   a.make_move(board, turn_player)
+
 
 
 

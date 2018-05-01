@@ -13,6 +13,7 @@ class Human(object):
         return move
 
     def make_move(self, board):
+        mark = self.marker
         print("human move")
 
     def set_name(self):

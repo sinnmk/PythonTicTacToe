@@ -53,6 +53,16 @@ class UserInterface(object):
                 return self.display_invalid_input_msg()
             else: 
                 return choice
+            
+    def modify_game_board_list(self, board):
+        game_board_list = []
+        for i in range(0, 9):
+            if board[i] == 1:
+                game_board_list.append('X')
+            elif board[i] == 2:
+                game_board_list.append('O')
+            elif board[i] == 0: game_board_list.append(' ')
+        return game_board_list
 
     def display_game_board(self, game_board_list): 
         print("""
