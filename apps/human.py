@@ -6,6 +6,7 @@ class Human(object):
         self.user_interface = UserInterface()
         self.stored_moves = []
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        self.name = "Human" 
         self.marker = marker
 
     def get_move(self, board):
@@ -13,8 +14,8 @@ class Human(object):
         return move
 
     def make_move(self, board):
-        mark = self.marker
-        print("human move")
+        move = self.get_move(board)
+        board[move - 1] = self.marker
 
     def set_name(self):
         name = self.user_interface.input_name()

@@ -43,22 +43,20 @@ class Computer(object):
         open_positions = self.get_open_positions(board)
         if len(winning_moves) > 0: 
             move = random.choice(winning_moves)
-            return move
+            board[move - 1] = self.marker
         if len(blocking_moves) > 0: 
             move = random.choice(blocking_moves)
-            return move
+            board[move - 1] = self.marker
         move = random.choice(self.num_board)
         if move in open_positions: 
-            return move
+            board[move - 1] = self.marker
         else: 
             return self.get_move(board)
 
     def make_move(self, board): 
-       print("computer move")
        available_moves = self.get_open_positions(board)
        move = random.choice(available_moves)
-       board[move-1] = self.marker 
-       print(move)
+       board[move - 1] = self.marker 
    
     def get_open_positions(self, board): 
         open_positions = []
@@ -66,6 +64,16 @@ class Computer(object):
             if board[i] == 0: 
                 open_positions.append(i + 1)
         return open_positions
+
+     def minimax(self, board): 
+        best_score = 0
+        move_score = 0
+        #if game over: 
+           #return evaluation score/move
+        available_moves = self.get_open_positions(board)
+        for move in available_moves: 
+           #make move
+           #call minimax
 
 if __name__ == "__main__":
    a = Computer(marker = 1)

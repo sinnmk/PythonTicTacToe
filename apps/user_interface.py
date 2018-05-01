@@ -83,11 +83,11 @@ class UserInterface(object):
         7 | 8 | 9
 
         """)
-        print(example_board)
+        return(example_board)
 
     def display_game_prompt(self): 
         game_prompt = ("""----------Welcome to TIC TAC TOE--------""")
-        print(game_prompt)
+        return(game_prompt)
 
     def display_menu(self): 
         menu = ("""
@@ -97,61 +97,63 @@ class UserInterface(object):
                 [4] Display Rules 
                 [5] Exit Game\n""")
 
-        print(menu)
+        return(menu)
 
     def display_menu_choice_msg(self): 
         menu_choice_msg = ("\nTIC TAC TOE MENU \n1. Player vs Computer \n2. Player vs Player \n3. Computer vs Computer \n4. Display Rules \n5. Quit")
-        print(menu_choice_msg)
+        return(menu_choice_msg)
 
     def display_winning_msg(self): 
         win_msg = ("Winner")
-        print(win_msg)
+        return(win_msg)
 
     def display_cat_game_msg(self): 
         cat_game_msg = ("CAT GAME! Better luck next time!")
-        print(cat_game_msg)
+        return(cat_game_msg)
 
     def display_play_again_msg(self): 
         play_again_msg = ("Would you like to play again? (Y)es or (N)o: ")
+        return play_again_msg
 
     def display_invalid_input_msg(self): 
         invalid_input_msg = ("This is not a valid entry, please try again: ")
+        return invalid_input_msg
 
     def display_game_rules(self):
         game_rules = ("The object of the game Tic Tac Toe is to get three in a row. You play on a three by three game board. The first player is known as X and the second is O. Players alternate placing X's and O's on the game board until either opponent has three in a row or all nine squares are filled. In the event that no one has three in a row, the stalemate is called a cat game.")    
-        print(game_rules)
+        return(game_rules)
 
     def display_input_choice_msg(self): 
         input_choice_msg = ("""Please pick menu choice(1-5): """)
-        print(input_choice_msg)
+        return(input_choice_msg)
 
     def display_pvp_prompt_msg(self): 
         pvp_prompt_msg = ("X goes first, O goes second.")
-        print(pvp_prompt_msg)
+        return(pvp_prompt_msg)
 
     def display_move_choice_msg(self): 
         game_move_choice_msg = ("Please enter your move (1-9): ")
-        print(game_move_choice_msg)
+        return(game_move_choice_msg)
 
     def display_player_turn_choice_msg(self): 
         player_turn_choice_msg = ("To go first, enter 1. To go second, enter 2: ")
-        print(player_turn_choice_msg)
+        return(player_turn_choice_msg)
 
     def display_input_name_msg(self): 
         input_name_msg = ("Please enter your name: ")
-        print(input_name_msg)
+        return(input_name_msg)
 
     def display_invalid_move_msg(self): 
         not_valid_position_msg = ("Position is not open, please choose an open position.")
-        print(not_valid_position_msg)
+        return(not_valid_position_msg)
 
     def display_game_over_msg(self): 
         game_over_msg = ("Game Over")
-        print(game_over_msg)
+        return(game_over_msg)
 
     def display_play_again_msg(self): 
         play_again_msg = ("Would you like to play again? [Y]es or [N]o: ")
-        print(play_again_msg)
+        return(play_again_msg)
 
 if __name__ == "__main__": 
     a = UserInterface()
