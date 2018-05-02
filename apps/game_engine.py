@@ -30,7 +30,6 @@ class GameEngine(object):
         win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
         for i in win_combos:
             if board[i[0]] == turn_player.marker and board[i[1]] == turn_player.marker and board[i[2]] == turn_player.marker:
-                print(turn_player.name + " wins!")
                 return True
         if len(available_moves) == 0: 
             return True
@@ -47,22 +46,22 @@ class GameEngine(object):
         game_running = True
         board = self.create_board()
         turn_player = player_one
-        print(self.user_interface.display_example_board())
+        self.user_interface.display_example_board()
         while game_running == True: 
             if self.is_game_over(board, turn_player) == True: 
-                self.user_interface.display_play_again_msg()
-                self.play_again()
                 game_running = False
-                exit()
-            else: 
+            else:
                 turn_player.make_move(board)
                 self.display_board(board)
                 turn_player = self.switch_player(turn_player, player_one, player_two) 
                 time.sleep(1)
+        print(turn_player.name + " wins!")
+        self.user_interface.display_play_again_msg()
+        self.play_again()
 
     def game_setup(self): 
-        print(self.user_interface.display_game_prompt())
-        print(self.user_interface.display_menu())
+        self.user_interface.display_game_prompt()
+        self.user_interface.display_menu()
         game_mode = self.user_interface.input_menu_choice()
         if game_mode == 1: 
             turn_choice = self.user_interface.input_turn_choice()
@@ -86,17 +85,18 @@ class GameEngine(object):
             self.run_game(player_one, player_two)
 
         elif game_mode == 4: 
-            print(self.user_interface.display_game_rules())
-            time.sleep(2)
+            self.user_interface.display_game_rules()
+            time.sleep(1)
             self.game_setup()
 
         elif game_mode == 5: 
             exit()
 
     def play_again(self): 
-        print(self.user_interface.display_play_again_msg())
-        answer = input("Y or N: ").upper()
-        if answer == "Y": 
+        self.user_interface.display_play_again_msg()
+        choice = self.user_interface.input_play_again_choice() 
+        choice = choice.upper()
+        if choice == "Y": 
             self.game_setup()
         else: 
             exit()
