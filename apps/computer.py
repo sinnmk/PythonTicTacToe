@@ -6,7 +6,6 @@ class Computer(object):
         self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
         self.name = "Computer"
-        #set difficulty
         self.marker = marker
 
     def get_possible_win_combos(self, board):
@@ -57,7 +56,7 @@ class Computer(object):
        available_moves = self.get_open_positions(board)
        move = random.choice(available_moves)
        board[move - 1] = self.marker 
-#---------------------------------------------------------------------------------------------------------------------------
+
     def get_open_positions(self, board): 
        open_positions = []
        for i in range(0, len(board)): 
@@ -69,46 +68,54 @@ class Computer(object):
        available_moves = self.get_open_positions(new_board)
        if len(available_moves) == 0: 
           return True
+       if self.x_win(new_board) == True: 
+           return True
+       if self.o_win(new_board) == True:
+           return True
 
-    def is_win(self, new_board, marker): 
+    def x_win(self, new_board): 
        win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
        for i in win_combos:
-          if new_board[i[0]] == marker and new_board[i[1]] == marker and new_board[i[2]] == marker:
+           if new_board[i[0]] == 1 and new_board[i[1]] == 1 and new_board[i[2]] == 1:
               return True
 
-    def score_game(self, new_board):
-       if self.is_win(new_board, marker = 1) == True: 
-           score = 10
-       elif self.is_win(new_board, marker = 2) == True: 
-           score = -10
-       else: 
-           score = 0
-       return score
+    def o_win(self, new_board): 
+       win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
+       for i in win_combos:
+           if new_board[i[0]] == 2 and new_board[i[1]] == 2 and new_board[i[2]] == 2:
+              return True
+
+  #  def score_game(self, new_board):
+  #     if self.x_win(new_board) == True: 
+  #         score = 10  
+  #         return score
+  #     if self.o_win(new_board) == True: 
+  #         score = -10 
+  #         return score
+  #     if self.x_win(new_board) == False and self.o_win(new_board) == False: 
+  #         score = 0
+  #         return score
 
     def make_next_move(self, move, new_board, marker):
         index = move - 1
         new_board[index] = marker
-        best_move = []
 
     def minimax(self, board, depth, marker):
-        print("beginning of minimax")
         new_board = board[:]
-        best_score = []
-        best_move = []
 
-        if self.is_game_over(new_board) == True: 
-           best_score = self.score_game(new_board)
-           print("GAME IS OVER:")
-           print("SCORE:", best_score, "PLAYER:", marker)
-           print(board)
-           print(best_move)
-            
         if depth % 2 == 0: 
             marker = 1
         elif depth % 2 == 1:  
             marker = 2
 
-        #maximizing player: X
+        if depth == 9 or self.is_game_over(new_board): 
+           if self.x_win(new_board) == True: 
+               return 10
+           if self.o_win(new_board) == True: 
+               return -10
+           if self.x_win(new_board) == False and self.o_win(new_board) == False: 
+               return 0
+
         if marker == 1: 
             best_value = -10
             moves = self.get_open_positions(new_board)
@@ -117,10 +124,8 @@ class Computer(object):
                 move_value = self.minimax(new_board, depth + 1, marker)  
                 best_value = max(move_value, best_value)
                 self.make_next_move(move, new_board, marker = 0)
-                print("x move:", move, "marker:", marker)
             return best_value
 
-        #minimizing player: O
         if marker == 2:  
             best_value = 10
             moves = self.get_open_positions(new_board)
@@ -129,15 +134,38 @@ class Computer(object):
                 move_value = self.minimax(new_board, depth + 1, marker) 
                 best_value = min(move_value, best_value)
                 self.make_next_move(move, new_board, marker = 0)
-                print("o move:", move, "marker:", marker)
             return best_value
+
+    def best_move(self, board, depth, marker): 
+        draw = 0
+        choices = []
+        best_choices = []
+        moves = self.get_open_positions(board)
+        for move in moves:
+            self.make_next_move(move, board, marker)
+            move_value = self.minimax(board, depth + 1, marker) 
+            self.make_next_move(move, board, marker = 0)
+            if move_value > draw: 
+                best_choices.append(move)
+                return best_choices[0]
+            elif move_value == draw: 
+                choices.append(move)
+        print("choices", choices)
+        print("best_choices", best_choices)
+                
+        if len(choices) > 0: 
+            move = random.choice(choices)
+            return move
+        else: 
+            move = random.choice(moves)
+            return move
 
 if __name__ == "__main__":
     a = Computer(marker = 1)
     marker = 1
-    board = [1, 0, 1, 2, 1, 2, 2, 0 , 0]
-    depth = 6 
-    a.minimax(board, depth, marker)
+    board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    depth = 0 
+    a.best_move(board, depth, marker)
 
 
 
