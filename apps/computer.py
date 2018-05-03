@@ -88,70 +88,55 @@ class Computer(object):
     def make_next_move(self, move, new_board, marker):
         index = move - 1
         new_board[index] = marker
+        best_move = []
 
     def minimax(self, board, depth, marker):
+        print("beginning of minimax")
         new_board = board[:]
+        best_score = []
+        best_move = []
 
         if self.is_game_over(new_board) == True: 
-            return self.score_game(new_board)
-        else: 
-            if depth % 2 == 0: 
-                marker = 1
-            elif depth % 2 == 1:  
-                marker = 2
+           best_score = self.score_game(new_board)
+           print("GAME IS OVER:")
+           print("SCORE:", best_score, "PLAYER:", marker)
+           print(board)
+           print(best_move)
+            
+        if depth % 2 == 0: 
+            marker = 1
+        elif depth % 2 == 1:  
+            marker = 2
 
-            if marker == 1: 
-                best_value = -10
-                moves = self.get_open_positions(new_board)
-                for move in moves:
-                    self.make_next_move(move, new_board, marker)
-                    move_value = self.minimax(new_board, depth + 1, marker)  
-                    if move_value > best_value: 
-                        best_value = move_value
-                        best_move = move
-                    self.make_next_move(move, new_board, marker = 0)
-                return best_value
+        #maximizing player: X
+        if marker == 1: 
+            best_value = -10
+            moves = self.get_open_positions(new_board)
+            for move in moves:
+                self.make_next_move(move, new_board, marker)
+                move_value = self.minimax(new_board, depth + 1, marker)  
+                best_value = max(move_value, best_value)
+                self.make_next_move(move, new_board, marker = 0)
+                print("x move:", move, "marker:", marker)
+            return best_value
 
-            if marker == 2:  
-                best_value = 10
-                moves = self.get_open_positions(new_board)
-                for move in moves: 
-                    self.make_next_move(move, new_board, marker)
-                    move_value = self.minimax(new_board, depth + 1, marker) 
-                    if move_value < best_value: 
-                        best_value = move_value
-                        best_move = move
-                    self.make_next_move(move, new_board, marker = 0)
-                return best_value
-
-    def best_move(self, board, depth, marker): 
-        neutral_value = 0
-        choices = []
-        moves = self.get_open_positions(board)
-        print("all open moves: ", moves)
-        for move in moves: 
-            self.make_next_move(move, board, marker)
-            move_value = self.minimax(board, depth + 1, marker)
-            self.make_next_move(move, board, marker = 0)
-            print("move_value: ", move_value)
-            if move_value > neutral_value: 
-                choices = [move]
-            elif move_value == neutral_value: 
-                choices.append(move)
-        print("choices: ", choices)
-
-        if len(choices) > 0: 
-            move = random.choice(choices)
-        else: 
-            move = random.choice(moves)
-        print("move: ", move)
-        return move
+        #minimizing player: O
+        if marker == 2:  
+            best_value = 10
+            moves = self.get_open_positions(new_board)
+            for move in moves: 
+                self.make_next_move(move, new_board, marker)
+                move_value = self.minimax(new_board, depth + 1, marker) 
+                best_value = min(move_value, best_value)
+                self.make_next_move(move, new_board, marker = 0)
+                print("o move:", move, "marker:", marker)
+            return best_value
 
 if __name__ == "__main__":
     a = Computer(marker = 1)
     marker = 1
-    board = [1, 2, 0, 1, 1, 0, 2, 2, 0]
-    depth = 6
+    board = [1, 0, 1, 2, 1, 2, 2, 0 , 0]
+    depth = 6 
     a.minimax(board, depth, marker)
 
 
