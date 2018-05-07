@@ -135,21 +135,30 @@ class Computer(object):
             self.make_next_move(move, board, player_marker)
             move_score = self.minimax(board, depth + 1, self.change_marker(player_marker))
             self.make_next_move(move, board, 0)
-            if move_score == 10: 
-                choices = move
-                return choices
-            if move_score > 0: 
-                choices = [move]
-            elif move_score == 0: 
-                choices.append(move)
+            if player_marker == 1: 
+                if move_score == 10: 
+                    choices = move
+                    return choices
+                if move_score > 0: 
+                    choices = [move]
+                elif move_score == 0: 
+                    choices.append(move)
+            else: 
+                if move_score == -10: 
+                    choices = move
+                    return choices
+                if move_score < 0: 
+                    choices = [move]
+                elif move_score == 0: 
+                    choices.append(move)
         if len(choices) > 0: 
             return random.choice(choices)
         else: 
             return random.choice(moves)
 
     def get_move(self, board): 
+        player_marker = self.marker 
         depth = 0
-        player_marker = 1
         move = self.best_move(board, depth, player_marker)
         return move
 

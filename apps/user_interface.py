@@ -92,6 +92,10 @@ class UserInterface(object):
         """)
         print(example_board)
 
+    def display_goodbye_msg(self): 
+        goodbye_msg = ("Thanks for playing, Goodbye!")
+        print(goodbye_msg)
+
     def display_game_prompt(self): 
         game_prompt = ("----------Welcome to TIC TAC TOE--------")
         print(game_prompt)

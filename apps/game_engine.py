@@ -30,9 +30,10 @@ class GameEngine(object):
         win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
         for i in win_combos:
             if board[i[0]] == turn_player.marker and board[i[1]] == turn_player.marker and board[i[2]] == turn_player.marker:
-
+                
                 return True
         if len(available_moves) == 0: 
+            print("Cat Game")
             return True
 
     def switch_player(self, turn_player, player_one, player_two): 
@@ -50,7 +51,6 @@ class GameEngine(object):
         self.user_interface.display_example_board()
         while game_running == True: 
             if self.is_game_over(board, turn_player) == True: 
-                print(turn_player.name + " wins!")
                 game_running = False
             else:
                 turn_player.make_move(board)
@@ -91,6 +91,7 @@ class GameEngine(object):
             self.game_setup()
 
         elif game_mode == 5: 
+            self.user_interface.display_goodbye_msg()
             exit()
 
     def play_again(self): 
@@ -100,6 +101,7 @@ class GameEngine(object):
         if choice == "Y": 
             self.game_setup()
         else: 
+            self.user_interface.display_goodbye_msg()
             exit()
 
 if __name__ == "__main__":
