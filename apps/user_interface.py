@@ -69,7 +69,7 @@ class UserInterface(object):
                 game_board_list.append('X')
             elif board[i] == 2:
                 game_board_list.append('O')
-            elif board[i] == 0: game_board_list.append(' ')
+            elif board[i] == 0: game_board_list.append(i + 1)
         return game_board_list
 
     def display_game_board(self, game_board_list): 
