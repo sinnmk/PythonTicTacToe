@@ -137,7 +137,7 @@ class UserInterface(object):
         print(pvp_prompt_msg)
 
     def display_move_choice_msg(self): 
-        game_move_choice_msg = "Please enter your move (1-9): "
+        game_move_choice_msg = "Please enter your move from the available positions on the board: "
         return game_move_choice_msg
 
     def display_input_choice_msg(self): 

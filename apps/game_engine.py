@@ -34,7 +34,7 @@ class GameEngine(object):
                 
                 return True
         if len(available_moves) == 0: 
-            print("Cat Game")
+            self.user_interface.display_cat_game_msg()
             return True
 
     def switch_player(self, turn_player, player_one, player_two): 
@@ -51,15 +51,12 @@ class GameEngine(object):
         turn_player = player_one
         self.user_interface.display_example_board()
         while game_running == True: 
+            turn_player.make_move(board)
+            self.display_board(board)
             if self.is_game_over(board, turn_player) == True: 
                 game_running = False
-            else:
-                turn_player.make_move(board)
-                self.display_board(board)
-                if self.is_game_over(board, turn_player) == True: 
-                    game_running = False
-                turn_player = self.switch_player(turn_player, player_one, player_two) 
-                time.sleep(1)
+            turn_player = self.switch_player(turn_player, player_one, player_two) 
+            time.sleep(1)
         self.user_interface.display_play_again_msg()
         self.play_again()
 
