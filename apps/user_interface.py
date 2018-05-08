@@ -71,6 +71,19 @@ class UserInterface(object):
                 return self.display_invalid_input_msg()
             else: 
                 return choice
+
+    def input_size_of_board(self): 
+        while True: 
+            try: 
+                size = int(input(self.display_size_msg()))
+            except ValueError: 
+                return self.display_invalid_input_msg()
+            else: 
+                return size
+
+    def display_size_msg(self): 
+        size_msg = ("Choose size of board: ")
+        return (size_msg)
             
     def modify_game_board_list(self, board):
         game_board_list = []

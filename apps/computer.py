@@ -34,12 +34,10 @@ class Computer(object):
     def get_possible_lose_combos(self, board):
         blocking_moves = []
         win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
-
         if self.marker == 1: 
             enemy_marker = 2
         else: 
             enemy_marker = 1
-
         for i in win_combos:
             if board[i[0]] == enemy_marker and board[i[1]] == enemy_marker and board[i[2]] == 0:
                 move = self.num_board[i[2]]
@@ -51,7 +49,6 @@ class Computer(object):
                 move = self.num_board[i[1]]
                 blocking_moves.append(move)
         return blocking_moves
-
 
     def get_open_positions(self, board): 
        open_positions = []
@@ -185,5 +182,3 @@ class Computer(object):
         depth = 0
         move = self.best_move(board, depth, player_marker)
         return move
-
-
