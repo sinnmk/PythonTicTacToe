@@ -5,10 +5,53 @@ class Computer(object):
     def __init__(self, marker):
         self.name = "Computer"
         self.marker = marker
+        self.num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    def make_move(self, board): 
-       move = self.get_move(board)
+    def make_move(self, board, difficulty): 
+       if difficulty == 1: 
+           move = self.get_novice_move(board)
+       elif difficulty == 2: 
+           move = self.get_intermediate_move(board)
+       elif difficulty == 3: 
+           move = self.get_master_move(board)
        board[move - 1] = self.marker 
+
+    def get_possible_win_combos(self, board):
+        win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
+        winning_moves = []
+        for i in win_combos:
+            if board[i[0]] == self.marker and board[i[1]] == self.marker and board[i[2]] == 0:
+                move = self.num_board[i[2]]
+                winning_moves.append(move)
+            if board[i[0]] == 0 and board[i[1]] == self.marker and board[i[2]] == self.marker:
+                move = self.num_board[i[0]]
+                winning_moves.append(move)
+            if board[i[0]] == self.marker and board[i[1]] == 0 and board[i[2]] == self.marker:
+                move = self.num_board[i[1]]
+                winning_moves.append(move)
+        return winning_moves
+
+    def get_possible_lose_combos(self, board):
+        blocking_moves = []
+        win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
+
+        if self.marker == 1: 
+            enemy_marker = 2
+        else: 
+            enemy_marker = 1
+
+        for i in win_combos:
+            if board[i[0]] == enemy_marker and board[i[1]] == enemy_marker and board[i[2]] == 0:
+                move = self.num_board[i[2]]
+                blocking_moves.append(move)
+            if board[i[0]] == 0 and board[i[1]] == enemy_marker and board[i[2]] == enemy_marker:
+                move = self.num_board[i[0]]
+                blocking_moves.append(move)
+            if board[i[0]] == enemy_marker and board[i[1]] == 0 and board[i[2]] == enemy_marker:
+                move = self.num_board[i[1]]
+                blocking_moves.append(move)
+        return blocking_moves
+
 
     def get_open_positions(self, board): 
        open_positions = []
@@ -111,7 +154,33 @@ class Computer(object):
         else: 
             return random.choice(moves)
 
-    def get_move(self, board): 
+    def get_novice_move(self, board): 
+        open_positions = self.get_open_positions(board)
+        move = random.choice(open_positions)
+        return move
+
+    def get_intermediate_move(self, board): 
+        num_board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        winning_moves = self.get_possible_win_combos(board)
+        blocking_moves = self.get_possible_lose_combos(board)
+        open_positions = self.get_open_positions(board)
+        if len(winning_moves) > 0: 
+            move = random.choice(winning_moves)
+            if move in open_positions: 
+                return move
+            else: 
+                return self.get_intermediate_move(board)
+        elif len(blocking_moves) > 0: 
+            move = random.choice(blocking_moves)
+            if move in open_positions: 
+                return move
+            else: 
+                return self.get_intermediate_move()
+        else: 
+            move = random.choice(open_positions)
+            return move
+
+    def get_master_move(self, board): 
         player_marker = self.marker 
         depth = 0
         move = self.best_move(board, depth, player_marker)

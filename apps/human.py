@@ -13,7 +13,7 @@ class Human(object):
         move = self.user_interface.input_move(board)
         return move
 
-    def make_move(self, board):
+    def make_move(self, board, difficulty):
         move = self.get_move(board)
         board[move - 1] = self.marker
 

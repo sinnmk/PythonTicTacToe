@@ -1,3 +1,5 @@
+import os
+
 class UserInterface(object): 
 
     def __init__(self): 
@@ -36,6 +38,14 @@ class UserInterface(object):
             except ValueError: 
                 return self.display_invalid_input_msg()
 
+    def input_difficulty_choice(self): 
+        while True: 
+            try: 
+                difficulty_choice = int(input(self.display_difficulty_choices()))
+                return difficulty_choice 
+            except ValueError: 
+                return self.input_difficulty_choice()
+
     def input_name(self): 
         while True: 
             try: 
@@ -71,6 +81,10 @@ class UserInterface(object):
                 game_board_list.append('O')
             elif board[i] == 0: game_board_list.append(i + 1)
         return game_board_list
+
+    def display_difficulty_choices(self): 
+        difficulty_choice = ("\n1. Novice Computer \n2. Intermediate Computer \n3. Master Computer \n Please choose your difficulty: ")
+        return difficulty_choice
 
     def display_game_board(self, game_board_list): 
         print("""
@@ -137,7 +151,7 @@ class UserInterface(object):
         print(pvp_prompt_msg)
 
     def display_move_choice_msg(self): 
-        game_move_choice_msg = "Please enter your move from the available positions on the board: "
+        game_move_choice_msg = "Enter your move: "
         return game_move_choice_msg
 
     def display_input_choice_msg(self): 
@@ -145,7 +159,7 @@ class UserInterface(object):
         return input_choice_msg
 
     def display_player_turn_choice_msg(self): 
-        player_turn_choice_msg = "To go first, enter 1. To go second, enter 2: "
+        player_turn_choice_msg = "Which player are you, Player[1] or Player[2]?: "
         return player_turn_choice_msg
 
     def display_input_name_msg(self): 
@@ -156,7 +170,10 @@ class UserInterface(object):
         play_again_msg = ("Would you like to play again? [Y]es or [N]o: ")
         return play_again_msg
 
-
-if __name__ == "__main__": 
-    a = UserInterface()
-
+    def clear_screen(self): 
+        os_name = os.name
+        if os_name == 'nt':
+            clear_message = 'cls'
+        else: 
+            clear_message = 'clear'
+        os.system(clear_message)

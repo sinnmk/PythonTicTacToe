@@ -48,15 +48,18 @@ class GameEngine(object):
     def run_game(self, player_one, player_two):
         game_running = True
         board = self.create_board()
+        difficulty = self.user_interface.input_difficulty_choice()
+        self.user_interface.clear_screen()
         turn_player = player_one
         self.user_interface.display_example_board()
         while game_running == True: 
-            turn_player.make_move(board)
+            turn_player.make_move(board, difficulty)
             self.display_board(board)
             if self.is_game_over(board, turn_player) == True: 
                 game_running = False
             turn_player = self.switch_player(turn_player, player_one, player_two) 
             time.sleep(1)
+        self.user_interface.clear_screen()
         self.user_interface.display_play_again_msg()
         self.play_again()
 
@@ -81,6 +84,7 @@ class GameEngine(object):
             self.run_game(player_one, player_two)
 
         elif game_mode == 3: 
+            difficulty = self.input_sub_menu_choice()
             player_one = Computer(marker = 1)
             player_two = Computer(marker = 2)
             self.run_game(player_one, player_two)
