@@ -103,8 +103,6 @@ class GameEngine(object):
             self.user_interface.display_goodbye_msg()
             exit()
 
-#------------------------------------------------------------------------------------
-
     def create_board(self): 
         size = self.user_interface.input_size_of_board()
         board = ([0] * size **2) 
@@ -125,7 +123,6 @@ class GameEngine(object):
         for i in index_board: 
             horizontal_wins.append(i)
         horizontal_wins = self.split_list(horizontal_wins, size)
-        print(horizontal_wins)
         return horizontal_wins
 
     def generate_vertical_win_combos(self, size): 
@@ -138,19 +135,44 @@ class GameEngine(object):
             if len(vert_win) == size:
                 vertical_wins.append(vert_win)
             i += 1
-        print(vertical_wins)
         return vertical_wins
 
-    def generate_diagonal_win_combos(self, size): 
+    def generate_right_diagonal_win_combo(self, size): 
         index_board = self.create_index_board(size)
-        diagonal_win_combos = []
         num_of_cells = size**2
-        start = 0
-        end = num_of_cells - 1 
+        right_diagonal_win_combos = []
+        right_diagonal_win_combos.append(index_board[0:num_of_cells:(size+1)])
+        return right_diagonal_win_combos
 
+    def generate_left_diagonal_win_combo(self, size): 
+        index_board = self.create_index_board(size)
+        num_of_cells = size**2
+        left_diagonal_win_combos = []
+        left_diagonal_win_combos.append(index_board[(size -1):(num_of_cells) - (size-1):(size -1)])
+        return left_diagonal_win_combos
 
-        print(diagonal_win_combos)
-        return diagonal_win_combos
+    def win_combo_list(self, size): 
+        vertical_wins = self.generate_vertical_win_combos(size)
+        horizontal_wins = self.generate_horizontal_win_combos(size)
+        rt_diag_wins = self.generate_right_diagonal_win_combo(size)
+        lt_diag_wins = self.generate_left_diagonal_win_combo(size)
+        win_combo_list = (vertical_wins+ horizontal_wins+ rt_diag_wins + lt_diag_wins)
+        print(win_combo_list)
+        return win_combo_list
+
+   # def is_game_over(self, board, turn_player):
+   #     available_moves = self.get_available_moves(board)
+   #     win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
+   #     for i in win_combos:
+   #         if board[i[0]] == turn_player.marker and board[i[1]] == turn_player.marker and board[i[2]] == turn_player.marker:
+   #             print(turn_player.name, " wins!")
+   #             return True
+   #     if len(available_moves) == 0: 
+   #         self.user_interface.display_cat_game_msg()
+   #         return True
+
+    def is_game_over(self, board, size, turn_player): 
+        pass
 
     def split_list(self, board, size):
         new_board = [board[i:i+size] for i in range(0, (len(board)), size)]
@@ -159,10 +181,10 @@ class GameEngine(object):
 if __name__ == "__main__":
     a = GameEngine()
     size = 4
-    a.create_index_board(size)
-    a.generate_vertical_win_combos(size)
-    a.generate_horizontal_win_combos(size)
-    #a.generate_diagonal_win_combos(size)
+    a.win_combo_list(size)
+    board = [1, 1, 1, 0, 0, 0, 0, 0, 0]
+    turn_player = 1
+    a.is_game_over(board, size, turn_player)
 
 
 
