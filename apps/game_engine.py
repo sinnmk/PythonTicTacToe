@@ -1,7 +1,6 @@
 from user_interface import UserInterface
 from human import Human
 from computer import Computer
-import numpy as np
 import math
 import time
 
@@ -9,31 +8,6 @@ class GameEngine(object):
 
     def __init__(self):
         self.user_interface = UserInterface()
-
-    def create_board(self): 
-        size = self.user_interface.input_size_of_board()
-        board = ([0] * size **2) 
-        print(self.print_board(board))
-        return board
-
-    #for logging
-    def print_board(self, board): 
-        return board
-
-    def find_edges(self, board): 
-        #this will have the start of a row/col and the end of the row/col
-        #find start  
-        #find end
-        #find edges of row: 0 + (d - 1)
-        #find edges of col: 0 + 1
-        pass
-
-    def calculate_win_combos(self, board, size): 
-        #n = the original win combo number
-        #row win : n + 1
-        #col win : n + size 
-        #diag win : n + (size + 1)
-        pass
 
     def display_board(self, board):
         game_board_list = self.user_interface.modify_game_board_list(board)
@@ -53,7 +27,6 @@ class GameEngine(object):
         for i in win_combos:
             if board[i[0]] == turn_player.marker and board[i[1]] == turn_player.marker and board[i[2]] == turn_player.marker:
                 print(turn_player.name, " wins!")
-                
                 return True
         if len(available_moves) == 0: 
             self.user_interface.display_cat_game_msg()
@@ -75,6 +48,7 @@ class GameEngine(object):
         turn_player = player_one
         self.user_interface.display_example_board()
         while game_running == True: 
+            print("It is ", turn_player.name,"'s turn...")
             turn_player.make_move(board, difficulty)
             self.display_board(board)
             if self.is_game_over(board, turn_player) == True: 
@@ -106,7 +80,6 @@ class GameEngine(object):
             self.run_game(player_one, player_two)
 
         elif game_mode == 3: 
-            difficulty = self.input_sub_menu_choice()
             player_one = Computer(marker = 1)
             player_two = Computer(marker = 2)
             self.run_game(player_one, player_two)
@@ -130,9 +103,66 @@ class GameEngine(object):
             self.user_interface.display_goodbye_msg()
             exit()
 
+#------------------------------------------------------------------------------------
+
+    def create_board(self): 
+        size = self.user_interface.input_size_of_board()
+        board = ([0] * size **2) 
+        return board
+
+    def create_index_board(self, size): 
+        num_of_cells = size**2 
+        i = -1 
+        index_board = []
+        while i < (num_of_cells-1): 
+            index_board.append(i+1)
+            i += 1
+        return index_board
+
+    def generate_horizontal_win_combos(self, size): 
+        index_board = self.create_index_board(size)
+        horizontal_wins = []
+        for i in index_board: 
+            horizontal_wins.append(i)
+        horizontal_wins = self.split_list(horizontal_wins, size)
+        print(horizontal_wins)
+        return horizontal_wins
+
+    def generate_vertical_win_combos(self, size): 
+        index_board = self.create_index_board(size)
+        vertical_wins = []
+        i = 0
+        num_of_cells = size**2
+        while i < len(index_board):
+            vert_win = index_board[0+i:num_of_cells:size]
+            if len(vert_win) == size:
+                vertical_wins.append(vert_win)
+            i += 1
+        print(vertical_wins)
+        return vertical_wins
+
+    def generate_diagonal_win_combos(self, size): 
+        index_board = self.create_index_board(size)
+        diagonal_win_combos = []
+        num_of_cells = size**2
+        start = 0
+        end = num_of_cells - 1 
+
+
+        print(diagonal_win_combos)
+        return diagonal_win_combos
+
+    def split_list(self, board, size):
+        new_board = [board[i:i+size] for i in range(0, (len(board)), size)]
+        return new_board
+
 if __name__ == "__main__":
     a = GameEngine()
-    a.game_setup()
-    #a.create_board()
+    size = 4
+    a.create_index_board(size)
+    a.generate_vertical_win_combos(size)
+    a.generate_horizontal_win_combos(size)
+    #a.generate_diagonal_win_combos(size)
+
 
 
