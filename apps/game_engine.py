@@ -9,9 +9,13 @@ class GameEngine(object):
     def __init__(self):
         self.user_interface = UserInterface()
 
-    def display_board(self, board):
-        game_board_list = self.user_interface.modify_game_board_list(board)
-        display_board = self.user_interface.display_game_board(game_board_list)
+    def create_board(self, size): 
+        board = ([0] * size **2) 
+        return board
+
+    def display_board(self, size, board):
+        game_board_list = self.user_interface.modify_game_board_list(size, board)
+        display_board = self.user_interface.display_game_board(size, game_board_list)
         return display_board
 
     def get_available_moves(self, board): 
@@ -21,17 +25,6 @@ class GameEngine(object):
                 available_moves.append(i + 1)
         return available_moves
 
-    def is_game_over(self, board, turn_player):
-        available_moves = self.get_available_moves(board)
-        win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
-        for i in win_combos:
-            if board[i[0]] == turn_player.marker and board[i[1]] == turn_player.marker and board[i[2]] == turn_player.marker:
-                print(turn_player.name, " wins!")
-                return True
-        if len(available_moves) == 0: 
-            self.user_interface.display_cat_game_msg()
-            return True
-
     def switch_player(self, turn_player, player_one, player_two): 
         if turn_player == player_one:  
             turn_player = player_two 
@@ -40,18 +33,23 @@ class GameEngine(object):
             turn_player = player_one 
             return turn_player
 
+    def get_size(self): 
+        size = self.user_interface.input_size_of_board()
+        return size
+
     def run_game(self, player_one, player_two):
+        size = self.get_size()
+        board = self.create_board(size)
+        win_combos = self.win_combo_list(size)
         game_running = True
-        board = self.create_board()
         difficulty = self.user_interface.input_difficulty_choice()
         self.user_interface.clear_screen()
         turn_player = player_one
         self.user_interface.display_example_board()
         while game_running == True: 
-            print("It is ", turn_player.name,"'s turn...")
             turn_player.make_move(board, difficulty)
-            self.display_board(board)
-            if self.is_game_over(board, turn_player) == True: 
+            self.display_board(size, board)
+            if self.is_game_over(board, size, win_combos, turn_player) == True: 
                 game_running = False
             turn_player = self.switch_player(turn_player, player_one, player_two) 
             time.sleep(1)
@@ -103,11 +101,6 @@ class GameEngine(object):
             self.user_interface.display_goodbye_msg()
             exit()
 
-    def create_board(self): 
-        size = self.user_interface.input_size_of_board()
-        board = ([0] * size **2) 
-        return board
-
     def create_index_board(self, size): 
         num_of_cells = size**2 
         i = -1 
@@ -157,34 +150,29 @@ class GameEngine(object):
         rt_diag_wins = self.generate_right_diagonal_win_combo(size)
         lt_diag_wins = self.generate_left_diagonal_win_combo(size)
         win_combo_list = (vertical_wins+ horizontal_wins+ rt_diag_wins + lt_diag_wins)
-        print(win_combo_list)
         return win_combo_list
 
-   # def is_game_over(self, board, turn_player):
-   #     available_moves = self.get_available_moves(board)
-   #     win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
-   #     for i in win_combos:
-   #         if board[i[0]] == turn_player.marker and board[i[1]] == turn_player.marker and board[i[2]] == turn_player.marker:
-   #             print(turn_player.name, " wins!")
-   #             return True
-   #     if len(available_moves) == 0: 
-   #         self.user_interface.display_cat_game_msg()
-   #         return True
-
-    def is_game_over(self, board, size, turn_player): 
-        pass
-
+    def is_game_over(self, board, size, win_combos, turn_player): 
+        available_moves = self.get_available_moves(board)
+        combo_points = 0
+        for combo in win_combos: 
+           for number in combo: 
+              if board[number] == turn_player.marker: 
+                 combo_points += 1
+                 if combo_points == size:
+                    print(turn_player.name, "wins")
+                    return True
+           combo_points = 0
+        if len(available_moves) == 0:
+           self.user_interface.display_cat_game_msg()
+           return True
+                  
     def split_list(self, board, size):
         new_board = [board[i:i+size] for i in range(0, (len(board)), size)]
         return new_board
 
 if __name__ == "__main__":
     a = GameEngine()
-    size = 4
-    a.win_combo_list(size)
-    board = [1, 1, 1, 0, 0, 0, 0, 0, 0]
-    turn_player = 1
-    a.is_game_over(board, size, turn_player)
-
+    a.game_setup()
 
 

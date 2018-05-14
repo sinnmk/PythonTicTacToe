@@ -16,40 +16,6 @@ class Computer(object):
            move = self.get_master_move(board)
        board[move - 1] = self.marker 
 
-    def get_possible_win_combos(self, board):
-        win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
-        winning_moves = []
-        for i in win_combos:
-            if board[i[0]] == self.marker and board[i[1]] == self.marker and board[i[2]] == 0:
-                move = self.num_board[i[2]]
-                winning_moves.append(move)
-            if board[i[0]] == 0 and board[i[1]] == self.marker and board[i[2]] == self.marker:
-                move = self.num_board[i[0]]
-                winning_moves.append(move)
-            if board[i[0]] == self.marker and board[i[1]] == 0 and board[i[2]] == self.marker:
-                move = self.num_board[i[1]]
-                winning_moves.append(move)
-        return winning_moves
-
-    def get_possible_lose_combos(self, board):
-        blocking_moves = []
-        win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
-        if self.marker == 1: 
-            enemy_marker = 2
-        else: 
-            enemy_marker = 1
-        for i in win_combos:
-            if board[i[0]] == enemy_marker and board[i[1]] == enemy_marker and board[i[2]] == 0:
-                move = self.num_board[i[2]]
-                blocking_moves.append(move)
-            if board[i[0]] == 0 and board[i[1]] == enemy_marker and board[i[2]] == enemy_marker:
-                move = self.num_board[i[0]]
-                blocking_moves.append(move)
-            if board[i[0]] == enemy_marker and board[i[1]] == 0 and board[i[2]] == enemy_marker:
-                move = self.num_board[i[1]]
-                blocking_moves.append(move)
-        return blocking_moves
-
     def get_open_positions(self, board): 
        open_positions = []
        for i in range(0, len(board)): 
@@ -71,16 +37,10 @@ class Computer(object):
         board[index] = marker
 
     def x_win(self, board): 
-       win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
-       for i in win_combos:
-           if board[i[0]] == 1 and board[i[1]] == 1 and board[i[2]] == 1:
-              return True
+       pass
 
     def o_win(self, board): 
-       win_combos = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
-       for i in win_combos:
-           if board[i[0]] == 2 and board[i[1]] == 2 and board[i[2]] == 2:
-              return True
+        pass
 
     def score_game(self, board):
        if self.x_win(board) == True: 

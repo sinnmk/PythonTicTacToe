@@ -85,28 +85,17 @@ class UserInterface(object):
         size_msg = ("Choose size of board: ")
         return (size_msg)
             
-    def modify_game_board_list(self, board):
+    def modify_game_board_list(self, size, board): 
         game_board_list = []
-        for i in range(0, 9):
-            if board[i] == 1:
-                game_board_list.append('X')
-            elif board[i] == 2:
-                game_board_list.append('O')
-            elif board[i] == 0: game_board_list.append(i + 1)
+        for i in range(0, size**2): 
+           if board[i] == 1: 
+              game_board_list.append(' X ')
+           elif board[i] == 2: 
+              game_board_list.append(' O ')
+           elif board[i] == 0: 
+              position = str(i + 1)
+              game_board_list.append(position)
         return game_board_list
-
-    def display_difficulty_choices(self): 
-        difficulty_choice = ("\n1. Novice Computer \n2. Intermediate Computer \n3. Master Computer \n Please choose your difficulty: ")
-        return difficulty_choice
-
-    def display_game_board(self, game_board_list): 
-        print("""
-         {} | {} | {}
-        ---+---+---
-         {} | {} | {}
-        ---+---+---
-         {} | {} | {}
-        """.format(*game_board_list))
 
     def display_example_board(self): 
         example_board = ("""
@@ -118,6 +107,18 @@ class UserInterface(object):
 
         """)
         print(example_board)
+
+    def display_game_board(self, size, game_board_list): 
+        cell = " {:<3} |"
+        row = cell * size
+        skip_line = "\n"
+        line_divide = ("------" * size)
+        game_board = (row + skip_line + line_divide + skip_line) * size 
+        print(game_board.format(*game_board_list))
+
+    def display_difficulty_choices(self): 
+        difficulty_choice = ("\n1. Novice Computer \n2. Intermediate Computer \n3. Master Computer \n Please choose your difficulty: ")
+        return difficulty_choice
 
     def display_goodbye_msg(self): 
         goodbye_msg = ("Thanks for playing, Goodbye!")
@@ -190,3 +191,5 @@ class UserInterface(object):
         else: 
             clear_message = 'clear'
         os.system(clear_message)
+
+   
